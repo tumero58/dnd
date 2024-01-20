@@ -10,8 +10,6 @@ const MovableTab = ({
     setItems
 }: any) => {
     const changeItemPosition = (currentItem: any, positionName: any) => {
-        console.log("changeLocaton worked");
-
         setItems((prevState: any) => {
             return prevState.map((e: any) => {
                 return {

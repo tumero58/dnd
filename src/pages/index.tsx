@@ -10,21 +10,14 @@ const Test = () => {
     const [items, setItems] = useState(gridItems);
 
     const returnItemsForPosition = (PositionName: any) => {
-        return items
-            .filter((item) => item.position === PositionName)
-            .map((item, index) => (
-                <MovableTab
-                    key={item.id}
-                    name={item.name}
-                    currentPositionName={item.position}
-                    setItems={setItems}
-                    index={index}
-                    component={item.component}
-                />
-            ));
+        return items.filter((item) => item.position === PositionName)
     };
 
     const { TOP_LEFT, TOP_RIGHT, BOTTOM } = GRID_POSITIONS;
+
+    const topLeftItems = returnItemsForPosition(TOP_LEFT);
+    const topRightItems = returnItemsForPosition(TOP_RIGHT);
+    const bottomItems = returnItemsForPosition(BOTTOM);
 
     return (
         <DndProvider backend={HTML5Backend}>
@@ -50,7 +43,16 @@ const Test = () => {
                             borderRadius: "4px",
                         }}>
                             <CompSpace position={TOP_LEFT} >
-                                {returnItemsForPosition(TOP_LEFT)}
+                                {topLeftItems?.map((item, index) => (
+                                    <MovableTab
+                                        key={item.id}
+                                        name={item.name}
+                                        currentPositionName={item.position}
+                                        setItems={setItems}
+                                        index={index}
+                                        component={item.component}
+                                    />
+                                ))}
                             </CompSpace>
                         </div>
                         <div style={{
@@ -60,7 +62,16 @@ const Test = () => {
                             borderRadius: "4px",
                         }}>
                             <CompSpace position={TOP_RIGHT} >
-                                {returnItemsForPosition(TOP_RIGHT)}
+                                {topRightItems?.map((item, index) => (
+                                    <MovableTab
+                                        key={item.id}
+                                        name={item.name}
+                                        currentPositionName={item.position}
+                                        setItems={setItems}
+                                        index={index}
+                                        component={item.component}
+                                    />
+                                ))}
                             </CompSpace>
                         </div>
                     </div>
@@ -71,7 +82,16 @@ const Test = () => {
                         borderRadius: "4px",
                     }}>
                         <CompSpace position={BOTTOM}>
-                            {returnItemsForPosition(BOTTOM)}
+                            {bottomItems?.map((item, index) => (
+                                <MovableTab
+                                    key={item.id}
+                                    name={item.name}
+                                    currentPositionName={item.position}
+                                    setItems={setItems}
+                                    index={index}
+                                    component={item.component}
+                                />
+                            ))}
                         </CompSpace>
                     </div>
                 </div>
