@@ -1,5 +1,5 @@
 import CompSpace from "@/components/CompSpace";
-import MovableTab from "@/components/MovableTab";
+import ItemsWrapper from "@/components/ItemsWrapper";
 import { GRID_POSITIONS } from "@/utils/constants";
 import { gridItems } from "@/utils/gridItems";
 import { useState } from "react";
@@ -43,16 +43,7 @@ const Test = () => {
                             borderRadius: "4px",
                         }}>
                             <CompSpace position={TOP_LEFT} >
-                                {topLeftItems?.map((item, index) => (
-                                    <MovableTab
-                                        key={item.id}
-                                        name={item.name}
-                                        currentPositionName={item.position}
-                                        setItems={setItems}
-                                        index={index}
-                                        component={item.component}
-                                    />
-                                ))}
+                                <ItemsWrapper currentItems={topLeftItems} setItems={setItems} />
                             </CompSpace>
                         </div>
                         <div style={{
@@ -62,16 +53,7 @@ const Test = () => {
                             borderRadius: "4px",
                         }}>
                             <CompSpace position={TOP_RIGHT} >
-                                {topRightItems?.map((item, index) => (
-                                    <MovableTab
-                                        key={item.id}
-                                        name={item.name}
-                                        currentPositionName={item.position}
-                                        setItems={setItems}
-                                        index={index}
-                                        component={item.component}
-                                    />
-                                ))}
+                                <ItemsWrapper currentItems={topRightItems} setItems={setItems} />
                             </CompSpace>
                         </div>
                     </div>
@@ -82,16 +64,7 @@ const Test = () => {
                         borderRadius: "4px",
                     }}>
                         <CompSpace position={BOTTOM}>
-                            {bottomItems?.map((item, index) => (
-                                <MovableTab
-                                    key={item.id}
-                                    name={item.name}
-                                    currentPositionName={item.position}
-                                    setItems={setItems}
-                                    index={index}
-                                    component={item.component}
-                                />
-                            ))}
+                            <ItemsWrapper currentItems={bottomItems} setItems={setItems} />
                         </CompSpace>
                     </div>
                 </div>
