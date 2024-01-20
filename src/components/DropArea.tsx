@@ -1,7 +1,7 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
 import { useDrop } from "react-dnd";
 
-const CompSpace = ({ position, children }: any) => {
+const DropArea = ({ position, children }: any) => {
     const [{ isOver }, drop] = useDrop({
         accept: itemTypes.COMPONENT,
         drop: () => ({ position }),
@@ -21,4 +21,4 @@ const CompSpace = ({ position, children }: any) => {
     )
 };
 
-export default CompSpace;
+export default DropArea;

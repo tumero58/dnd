@@ -1,4 +1,4 @@
-import CompSpace from "@/components/CompSpace";
+import DropArea from "@/components/DropArea";
 import ItemsWrapper from "@/components/ItemsWrapper";
 import { GRID_POSITIONS } from "@/utils/constants";
 import { gridItems } from "@/utils/gridItems";
@@ -42,9 +42,9 @@ const Test = () => {
                             border: "1px solid grey",
                             borderRadius: "4px",
                         }}>
-                            <CompSpace position={TOP_LEFT} >
+                            <DropArea position={TOP_LEFT} >
                                 <ItemsWrapper currentItems={topLeftItems} setItems={setItems} />
-                            </CompSpace>
+                            </DropArea>
                         </div>
                         <div style={{
                             height: "100%",
@@ -52,9 +52,9 @@ const Test = () => {
                             border: "1px solid grey",
                             borderRadius: "4px",
                         }}>
-                            <CompSpace position={TOP_RIGHT} >
+                            <DropArea position={TOP_RIGHT} >
                                 <ItemsWrapper currentItems={topRightItems} setItems={setItems} />
-                            </CompSpace>
+                            </DropArea>
                         </div>
                     </div>
                     <div style={{
@@ -63,9 +63,9 @@ const Test = () => {
                         border: "1px solid grey",
                         borderRadius: "4px",
                     }}>
-                        <CompSpace position={BOTTOM}>
+                        <DropArea position={BOTTOM}>
                             <ItemsWrapper currentItems={bottomItems} setItems={setItems} />
-                        </CompSpace>
+                        </DropArea>
                     </div>
                 </div>
             </div>

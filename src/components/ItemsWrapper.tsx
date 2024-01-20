@@ -1,4 +1,4 @@
-import MovableTab from "./MovableTab";
+import DragItem from "./DragItem";
 
 const ItemsWrapper = ({ currentItems, setItems }: any) => {
     return (
@@ -11,7 +11,7 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
                 gap: "16px"
             }}>
                 {currentItems?.map((item: any, index: number) => (
-                    <MovableTab
+                    <DragItem
                         key={item.id}
                         name={item.name}
                         currentPositionName={item.position}

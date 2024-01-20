@@ -3,10 +3,10 @@ import { GRID_POSITIONS } from "@/utils/constants";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-const MovableTab = ({
+const DragItem = ({
     name,
     index,
-    currentpositionName,
+    currentPositionName,
     setItems
 }: any) => {
     const changeItemPosition = (currentItem: any, positionName: any) => {
@@ -28,7 +28,7 @@ const MovableTab = ({
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: itemTypes.COMPONENT,
-        item: { index, name, currentpositionName, type: itemTypes.COMPONENT },
+        item: { index, name, currentPositionName, type: itemTypes.COMPONENT },
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -66,4 +66,4 @@ const MovableTab = ({
     )
 };
 
-export default MovableTab;
+export default DragItem;
