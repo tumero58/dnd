@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DragItem from "./DragItem";
 import { Box } from "@mui/material";
 
@@ -7,6 +7,18 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
     const handleItemClick = (item: any) => {
         setActiveItem(item);
     };
+
+    useEffect(() => {
+        if (currentItems.length !== 0) {
+            const currentItemNames = currentItems.map((item: any) => item.name);
+            if (activeItem) {
+                if (!currentItemNames.includes(activeItem.name)) {
+                    setActiveItem(currentItems[0])
+                }
+            }
+        }
+    }, [currentItems, activeItem])
+
     return (
         <Box sx={{
             width: "100%",
