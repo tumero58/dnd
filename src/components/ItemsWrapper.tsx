@@ -4,15 +4,20 @@ import { Box } from "@mui/material";
 
 const ItemsWrapper = ({ currentItems, setItems }: any) => {
     const [activeItem, setActiveItem] = useState<any>(currentItems?.[0] || {});
+
     const handleItemClick = (item: any) => {
         setActiveItem(item);
     };
 
+    const handleClose = (item: any) => {
+        console.log(`${item.name} closed`);
+    }
+
     useEffect(() => {
         if (currentItems.length !== 0) {
-            const currentItemNames = currentItems.map((item: any) => item.name);
+            const currentItemIds = currentItems.map((item: any) => item.id);
             if (activeItem) {
-                if (!currentItemNames.includes(activeItem.name)) {
+                if (!currentItemIds.includes(activeItem.id)) {
                     setActiveItem(currentItems[0])
                 }
             }
@@ -24,18 +29,23 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
             width: "100%",
             height: "100%",
             position: "relative",
-            paddingTop: "20px"
+            paddingTop: "26px"
         }}>
             <Box sx={{
                 display: "flex",
-                gap: "16px",
                 position: "absolute",
                 top: 0,
                 left: 0
             }}>
                 {currentItems?.map((item: any, index: number) => (
                     <Box key={item.id} sx={{
-                        background: item.id === activeItem?.id ? "yellow" : "white"
+                        height: "26px",
+                        paddingX: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        backgroundColor: item.id === activeItem?.id ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.05)",
+                        cursor: "pointer"
                     }} onClick={() => {
                         handleItemClick(item);
                     }}>
@@ -46,6 +56,17 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
                             index={index}
                             component={item.component}
                         />
+                        <Box sx={{
+                            cursor: "pointer",
+                            color: "rgba(0, 0, 0, 0.2)",
+                            userSelect: "none",
+                            ":hover": {
+                                color: "black"
+                            }
+                        }} onClick={(e) => {
+                            e.stopPropagation();
+                            handleClose(item);
+                        }}>x</Box>
                     </Box>
                 ))}
             </Box>
