@@ -23,11 +23,12 @@ const Test = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <Box sx={{
-                padding: "16px"
+                padding: "16px",
+                height: "100vh"
             }}>
                 <Box sx={{
                     width: "100%",
-                    height: "700px",
+                    height: "100%",
                     display: "flex",
                     flexDirection: "column",
                     gap: "16px"
@@ -35,11 +36,11 @@ const Test = () => {
                     <Box sx={{
                         display: "flex",
                         gap: "16px",
-                        height: "500px",
+                        height:"100%"
                     }}>
                         <Box sx={{
                             height: "100%",
-                            width: "30%",
+                            width: "67%",
                             border: "1px solid grey",
                             borderRadius: "4px",
                         }}>
@@ -49,7 +50,7 @@ const Test = () => {
                         </Box>
                         <Box sx={{
                             height: "100%",
-                            width: "70%",
+                            width: "33%",
                             border: "1px solid grey",
                             borderRadius: "4px",
                         }}>
