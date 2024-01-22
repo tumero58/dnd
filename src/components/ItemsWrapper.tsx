@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DragItem from "./DragItem";
+import { Box } from "@mui/material";
 
 const ItemsWrapper = ({ currentItems, setItems }: any) => {
     const [activeItem, setActiveItem] = useState<any>(currentItems?.[0] || {});
@@ -7,13 +8,13 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
         setActiveItem(item);
     };
     return (
-        <div style={{
+        <Box sx={{
             width: "100%",
             height: "100%",
             position: "relative",
             paddingTop: "20px"
         }}>
-            <div style={{
+            <Box sx={{
                 display: "flex",
                 gap: "16px",
                 position: "absolute",
@@ -21,7 +22,7 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
                 left: 0
             }}>
                 {currentItems?.map((item: any, index: number) => (
-                    <div key={item.id} style={{
+                    <Box key={item.id} sx={{
                         background: item.id === activeItem?.id ? "yellow" : "white"
                     }} onClick={() => {
                         handleItemClick(item);
@@ -33,11 +34,11 @@ const ItemsWrapper = ({ currentItems, setItems }: any) => {
                             index={index}
                             component={item.component}
                         />
-                    </div>
+                    </Box>
                 ))}
-            </div>
+            </Box>
             {currentItems?.find((item: any) => item.id === activeItem?.id)?.component}
-        </div>
+        </Box>
     )
 };
 

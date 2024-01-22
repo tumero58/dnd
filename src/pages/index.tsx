@@ -2,6 +2,7 @@ import DropArea from "@/components/DropArea";
 import ItemsWrapper from "@/components/ItemsWrapper";
 import { GRID_POSITIONS } from "@/utils/constants";
 import { gridItems } from "@/utils/gridItems";
+import { Box } from "@mui/material";
 import { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -21,22 +22,22 @@ const Test = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div style={{
+            <Box sx={{
                 padding: "16px"
             }}>
-                <div style={{
+                <Box sx={{
                     width: "100%",
                     height: "700px",
                     display: "flex",
                     flexDirection: "column",
                     gap: "16px"
                 }}>
-                    <div style={{
+                    <Box sx={{
                         display: "flex",
                         gap: "16px",
                         height: "500px",
                     }}>
-                        <div style={{
+                        <Box sx={{
                             height: "100%",
                             width: "30%",
                             border: "1px solid grey",
@@ -45,8 +46,8 @@ const Test = () => {
                             <DropArea position={TOP_LEFT} >
                                 <ItemsWrapper currentItems={topLeftItems} setItems={setItems} />
                             </DropArea>
-                        </div>
-                        <div style={{
+                        </Box>
+                        <Box sx={{
                             height: "100%",
                             width: "70%",
                             border: "1px solid grey",
@@ -55,9 +56,9 @@ const Test = () => {
                             <DropArea position={TOP_RIGHT} >
                                 <ItemsWrapper currentItems={topRightItems} setItems={setItems} />
                             </DropArea>
-                        </div>
-                    </div>
-                    <div style={{
+                        </Box>
+                    </Box>
+                    <Box sx={{
                         height: "100%",
                         width: "100%",
                         border: "1px solid grey",
@@ -66,9 +67,9 @@ const Test = () => {
                         <DropArea position={BOTTOM}>
                             <ItemsWrapper currentItems={bottomItems} setItems={setItems} />
                         </DropArea>
-                    </div>
-                </div>
-            </div>
+                    </Box>
+                </Box>
+            </Box>
         </DndProvider>
     )
 };

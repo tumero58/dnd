@@ -1,14 +1,16 @@
+import { Box } from "@mui/material";
+
 const Comp3 = () => {
     return (
-        <div
-            style={{
+        <Box
+            sx={{
                 fontSize: 40,
                 fontWeight: 'bold',
                 cursor: 'move',
             }}
         >
             Comp3
-        </div>
+        </Box>
     )
 };
 
