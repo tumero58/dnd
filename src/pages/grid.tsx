@@ -1,4 +1,4 @@
-import GridItems from "@/components/GridItems";
+import GridWrapper from "@/components/GridWrapper";
 import { Box } from "@mui/material";
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
@@ -10,7 +10,7 @@ const Grid = () => {
                 padding: "16px",
                 height: "100vh"
             }}>
-                <GridItems />
+                <GridWrapper />
             </Box>
         </DndProvider>
     )

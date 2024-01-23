@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import GridItem from "./GridItem";
 
-const GridItems = () => {
+const GridWrapper = () => {
     const [gridItems, setGridItems] = useState({
         mainComponents: [
             ...gridItems2
@@ -12,69 +12,69 @@ const GridItems = () => {
             mainComponents: [
                 // gridItems2[1]
             ],
-            topComponents: [
+            topComponents: {
 
-            ],
-            leftComponents: [
+            },
+            leftComponents: {
 
-            ],
-            bottomComponents: [
+            },
+            bottomComponents: {
 
-            ],
-            rightComponents: [
+            },
+            rightComponents: {
 
-            ]
+            }
         },
         leftComponents: {
             mainComponents: [
                 // gridItems2[1]
             ],
-            topComponents: [
+            topComponents: {
 
-            ],
-            leftComponents: [
+            },
+            leftComponents: {
 
-            ],
-            bottomComponents: [
+            },
+            bottomComponents: {
 
-            ],
-            rightComponents: [
+            },
+            rightComponents: {
 
-            ]
+            }
         },
         bottomComponents: {
             mainComponents: [
                 // gridItems2[1]
             ],
-            topComponents: [
+            topComponents: {
 
-            ],
-            leftComponents: [
+            },
+            leftComponents: {
 
-            ],
-            bottomComponents: [
+            },
+            bottomComponents: {
 
-            ],
-            rightComponents: [
+            },
+            rightComponents: {
 
-            ]
+            }
         },
         rightComponents: {
             mainComponents: [
                 // gridItems2[1]
             ],
-            topComponents: [
+            topComponents: {
 
-            ],
-            leftComponents: [
+            },
+            leftComponents: {
 
-            ],
-            bottomComponents: [
+            },
+            bottomComponents: {
 
-            ],
-            rightComponents: [
+            },
+            rightComponents: {
 
-            ]
+            }
         },
 
     })
@@ -111,4 +111,4 @@ const GridItems = () => {
     )
 };
 
-export default GridItems;
+export default GridWrapper;
