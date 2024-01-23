@@ -1,10 +1,9 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
-import { GRID_POSITIONS } from "@/utils/constants";
 import { Box } from "@mui/material";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
-const DragItem = ({
+const DragItemGrid = ({
     name,
     index,
     currentPositionName,
@@ -56,4 +55,4 @@ const DragItem = ({
     )
 };
 
-export default DragItem;
+export default DragItemGrid;
