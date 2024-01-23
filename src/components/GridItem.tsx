@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import DragItemGrid from "./DragItemGrid";
+import DragItem from "./DragItem";
 
-const GridItem = ({ currentItems, setItems }: { currentItems: any, setItems: any }) => {
-    const [activeItem, setActiveItem] = useState<any>(currentItems?.[0] || {});
+const GridItem = ({ items, setItems }: { items: any, setItems: any }) => {
+    const [activeItem, setActiveItem] = useState<any>(items?.[0] || {});
 
     const handleItemClick = (item: any) => {
         setActiveItem(item);
@@ -14,15 +14,15 @@ const GridItem = ({ currentItems, setItems }: { currentItems: any, setItems: any
     };
 
     useEffect(() => {
-        if (currentItems.length !== 0) {
-            const currentItemIds = currentItems.map((item: any) => item.id);
+        if (items.length !== 0) {
+            const currentItemIds = items.map((item: any) => item.id);
             if (activeItem) {
                 if (!currentItemIds.includes(activeItem.id)) {
-                    setActiveItem(currentItems[0])
+                    setActiveItem(items[0])
                 }
             }
         }
-    }, [currentItems, activeItem])
+    }, [items, activeItem])
 
     return (
         <Box sx={{
@@ -39,7 +39,7 @@ const GridItem = ({ currentItems, setItems }: { currentItems: any, setItems: any
                 top: 0,
                 left: 0
             }}>
-                {currentItems?.map((item: any, index: number) => (
+                {items?.map((item: any, index: number) => (
                     <Box key={item.id} sx={{
                         height: "26px",
                         paddingX: 1,
@@ -51,7 +51,7 @@ const GridItem = ({ currentItems, setItems }: { currentItems: any, setItems: any
                     }} onClick={() => {
                         handleItemClick(item);
                     }}>
-                        <DragItemGrid
+                        <DragItem
                             name={item.name}
                             currentPositionName={item.position}
                             setItems={setItems}
@@ -72,7 +72,7 @@ const GridItem = ({ currentItems, setItems }: { currentItems: any, setItems: any
                     </Box>
                 ))}
             </Box>
-            {currentItems?.find((item: any) => item.id === activeItem?.id)?.component}
+            {items?.find((item: any) => item.id === activeItem?.id)?.component}
         </Box>
 
     )
