@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import DragItem from "./DragItem";
 
-const GridItem = ({ items, setItems }: { items: any, setItems: any }) => {
+const GridItem = ({ items, setItems, className }: { items: any, setItems: any, className: any }) => {
     const [activeItem, setActiveItem] = useState<any>(items?.[0] || {});
 
     const handleItemClick = (item: any) => {
@@ -32,7 +32,7 @@ const GridItem = ({ items, setItems }: { items: any, setItems: any }) => {
             paddingTop: "26px",
             border: "1px solid grey",
             borderRadius: "4px",
-        }}>
+        }} className={className}>
             <Box sx={{
                 display: "flex",
                 position: "absolute",

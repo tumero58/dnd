@@ -16,14 +16,14 @@ const GridWrapper = () => {
 
             },
             leftComponents: {
-                // mainComponents: [
-                //     gridItems2[2]
-                // ],
-                // bottomComponents: {
-                //     mainComponents: [
-                //         gridItems2[2]
-                //     ],
-                // },
+                mainComponents: [
+                    gridItems2[2]
+                ],
+                bottomComponents: {
+                    mainComponents: [
+                        gridItems2[2]
+                    ],
+                },
             },
             bottomComponents: {
 
@@ -86,32 +86,36 @@ const GridWrapper = () => {
 
     })
 
-    const renderGridItems = (gridItems: any): any => {
+    const renderGridItems = (gridItems: any, parentClassName: string = ""): any => {
         if (Object.keys(gridItems).length === 0) {
             return;
         }
         let directionColumn;
+
         let beforeMainItems;
         let afterMainItems;
-        if (gridItems.leftComponents && Object.keys(gridItems.leftComponents).length !== 0 && gridItems.leftComponents.mainComponents.length !== 0) {
-            console.log("assign left");
 
-            beforeMainItems = gridItems.leftComponents
+        let beforeClassName;
+        let afterClassName;
+
+        if (gridItems.leftComponents && Object.keys(gridItems.leftComponents).length !== 0 && gridItems.leftComponents.mainComponents.length !== 0) {
+            beforeMainItems = gridItems.leftComponents;
+            beforeClassName = "leftComponents";
             directionColumn = false;
         }
         if (gridItems.topComponents && Object.keys(gridItems.topComponents).length !== 0 && gridItems.topComponents.mainComponents?.length !== 0) {
-            console.log("assign top");
             beforeMainItems = gridItems.topComponents
+            beforeClassName = "topComponents";
             directionColumn = true;
         }
         if (gridItems.rightComponents && Object.keys(gridItems.rightComponents).length !== 0 && gridItems.rightComponents.mainComponents?.length !== 0) {
-            console.log("assign right");
-            afterMainItems = gridItems.rightComponents
+            afterMainItems = gridItems.rightComponents;
+            afterClassName = "rightComponents";
             directionColumn = false;
         }
         if (gridItems.bottomComponents && Object.keys(gridItems.bottomComponents).length !== 0 && gridItems.bottomComponents.mainComponents?.length !== 0) {
-            console.log("assign bottom");
-            afterMainItems = gridItems.bottomComponents
+            afterMainItems = gridItems.bottomComponents;
+            afterClassName = "bottomComponents";
             directionColumn = true;
         }
 
@@ -124,12 +128,12 @@ const GridWrapper = () => {
                 width: "100%"
             }}>
                 {beforeMainItems && beforeMainItems?.mainComponents?.length !== 0 ?
-                    renderGridItems(beforeMainItems) : <></>
+                    renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
                 }
                 {gridItems.mainComponents?.length !== 0 ?
-                    <GridItem items={gridItems.mainComponents} setItems={() => { }} /> : <></>}
+                    <GridItem className={parentClassName} items={gridItems.mainComponents} setItems={() => { }} /> : <></>}
                 {afterMainItems && afterMainItems?.mainComponents?.length !== 0 ?
-                    renderGridItems(afterMainItems) : <></>
+                    renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`) : <></>
                 }
             </Box>
         )
