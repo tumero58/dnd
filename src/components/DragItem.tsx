@@ -1,25 +1,24 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
-import { GRID_POSITIONS } from "@/utils/constants";
+import { changeDragging } from "@/redux/features/dndSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { Box } from "@mui/material";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 const DragItem = ({
     name,
     index,
-    currentPositionName,
     setItems
 }: any) => {
-    const changeItemPosition = (currentItem: any, positionName: any) => {
-        setItems((prevState: any) => {
-            return prevState.map((e: any) => {
-                return {
-                    ...e,
-                    position: e.name === currentItem.name ? positionName : e.position
-                };
-            });
-        });
-    };
+    const changeItemPosition = (item: any, position: any) => {
+        setItems((items: any) => {
+            const itemToMove = items.mainComponents.find((newItem: any) => newItem.name === item.name);
+            let newItems = { ...items };
+            newItems[position].mainComponents = [itemToMove];
+            newItems.mainComponents = newItems.mainComponents.filter((currentItem: any) => currentItem.name !== itemToMove.name);
+            return newItems;
+        })
+    }
 
     const ref = useRef(null);
 
@@ -29,7 +28,7 @@ const DragItem = ({
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: itemTypes.COMPONENT,
-        item: { index, name, currentPositionName, type: itemTypes.COMPONENT },
+        item: { index, name, type: itemTypes.COMPONENT },
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -38,7 +37,7 @@ const DragItem = ({
             if (dropResult) {
                 const { position } = dropResult;
                 if (position) {
-                    changeItemPosition(item, position)
+                    changeItemPosition(item, position);
                 }
             }
         },
@@ -47,6 +46,11 @@ const DragItem = ({
     const opacity = isDragging ? 0.4 : 1;
 
     drag(drop(ref));
+
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(changeDragging(isDragging))
+    }, [isDragging, dispatch])
 
 
     return (

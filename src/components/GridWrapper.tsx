@@ -10,20 +10,20 @@ const GridWrapper = () => {
         ],
         topComponents: {
             mainComponents: [
-                gridItems2[1]
+                // gridItems2[1]
             ],
             topComponents: {
 
             },
             leftComponents: {
-                mainComponents: [
-                    gridItems2[2]
-                ],
-                bottomComponents: {
-                    mainComponents: [
-                        gridItems2[2]
-                    ],
-                },
+                // mainComponents: [
+                //     gridItems2[2]
+                // ],
+                // bottomComponents: {
+                //     mainComponents: [
+                //         gridItems2[2]
+                //     ],
+                // },
             },
             bottomComponents: {
 
@@ -131,7 +131,7 @@ const GridWrapper = () => {
                     renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
                 }
                 {gridItems.mainComponents?.length !== 0 ?
-                    <GridItem className={parentClassName} items={gridItems.mainComponents} setItems={() => { }} /> : <></>}
+                    <GridItem className={parentClassName} items={gridItems.mainComponents} setItems={setGridItems} /> : <></>}
                 {afterMainItems && afterMainItems?.mainComponents?.length !== 0 ?
                     renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`) : <></>
                 }
@@ -145,7 +145,7 @@ const GridWrapper = () => {
             border: "1px solid grey",
             borderRadius: "4px",
         }}>
-            {renderGridItems(gridItems)}
+            {renderGridItems(gridItems, "main")}
         </Box>
     )
 };

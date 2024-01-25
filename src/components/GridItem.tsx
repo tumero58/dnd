@@ -1,8 +1,13 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import DragItem from "./DragItem";
+import { useSelector } from "react-redux";
+import { getDndDragging } from "@/redux/features/dndSlice";
+import DropAreaGrid from "./DropAreaGrid";
 
 const GridItem = ({ items, setItems, className }: { items: any, setItems: any, className: any }) => {
+    const isDragging = useSelector(getDndDragging);
+
     const [activeItem, setActiveItem] = useState<any>(items?.[0] || {});
 
     const handleItemClick = (item: any) => {
@@ -23,6 +28,22 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
             }
         }
     }, [items, activeItem])
+
+    const [screenWidth, setScreenWidth] = useState(0);
+    const [screenHeight, setScreenHeight] = useState(0);
+
+    useEffect(() => {
+        if (screenHeight && screenWidth) {
+            return
+        };
+        if (isDragging) {
+            const element = document.getElementsByClassName(className)[0];
+            if (element) {
+                setScreenWidth(element.clientWidth);
+                setScreenHeight(element.clientHeight)
+            }
+        }
+    }, [isDragging, className, screenHeight, screenWidth])
 
     return (
         <Box sx={{
@@ -73,6 +94,55 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
                 ))}
             </Box>
             {items?.find((item: any) => item.id === activeItem?.id)?.component}
+            {isDragging ?
+                <Box sx={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    width: screenWidth,
+                    height: screenHeight,
+                    backgroundColor: "rgba(0,0,0,0.2)",
+                    borderRadius: "4px"
+                }}>
+                    <Box sx={{
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                    }}>
+                        <Box sx={{
+                            width: screenWidth / 2,
+                            height: screenHeight / 4
+                        }}>
+                            <DropAreaGrid position="topComponents"></DropAreaGrid>
+                        </Box>
+                        <Box sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            width: "100%"
+                        }}>
+                            <Box sx={{
+                                height: screenHeight / 2,
+                                width: screenWidth / 4
+                            }}>
+                                <DropAreaGrid position="leftComponents"></DropAreaGrid>
+                            </Box>
+                            <Box sx={{
+                                height: screenHeight / 2,
+                                width: screenWidth / 4
+                            }}>
+                                <DropAreaGrid position="rightComponents"></DropAreaGrid>
+                            </Box>
+                        </Box>
+                        <Box sx={{
+                            width: screenWidth / 2,
+                            height: screenHeight / 4
+                        }}>
+                            <DropAreaGrid position="bottomComponents"></DropAreaGrid>
+                        </Box>
+                    </Box>
+                </Box> : <></>}
         </Box>
 
     )
