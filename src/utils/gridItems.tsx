@@ -22,3 +22,21 @@ export const gridItems2: IGridItems[] = [
     { id: 3, name: "Comp3", component: <Comp3 /> },
     { id: 4, name: "Comp4", component: <Comp4 /> },
 ]
+
+const findItem = (name: string, items: any): any => {
+    const foundItem = items.mainComponents?.find((item: any) => item.name === name);
+    if (foundItem) {
+        return foundItem
+    } else {
+        const keys = Object.keys(items);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            if (key !== "mainComponents") {
+                const foundItem = findItem(name, items[key])
+                if (foundItem) {
+                    return foundItem;
+                }
+            }
+        }
+    }
+};
