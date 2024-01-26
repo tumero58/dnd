@@ -19,13 +19,14 @@ const DragItem = ({
             const changePositionKey = positionChain[0];
 
             const newItems = { ...items };
-            
+
             if (changePositionKey === "mainPosition") {
                 newItems[changePositionKey] = [...newItems[changePositionKey], itemToMove]
             } else {
                 newItems[changePositionKey].mainComponents = [itemToMove];
             }
             return newItems;
+            // newItems.mainComponents = newItems.mainComponents.filter((currentItem: any) => currentItem.name !== itemToMove.name);
         })
     }
 
