@@ -1,7 +1,7 @@
 import Comp1 from "@/components/Comp1";
 import Comp2 from "@/components/Comp2";
 import Comp3 from "@/components/Comp3";
-import { GRID_POSITIONS, GRID_POSITIONS_2 } from "./constants";
+import { GRID_POSITIONS } from "./constants";
 import { ReactElement } from "react";
 import Comp4 from "@/components/Comp4";
 
@@ -42,7 +42,7 @@ export const findItem = (name: string, items: any): any => {
 };
 
 export const deleteItem = (name: string, items: any): any => {
-    const foundItem = items.mainComponents?.find((item: any) => item.name === name);
+    const foundItem = items.mainComponents?.find((item: any) => item.name === name);    
     if (foundItem) {
         items.mainComponents = items.mainComponents?.filter((item: any) => item.name !== name);
     } else {
@@ -50,10 +50,7 @@ export const deleteItem = (name: string, items: any): any => {
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             if (key !== "mainComponents") {
-                const foundItem = findItem(name, items[key])
-                if (foundItem) {
-                    return foundItem;
-                }
+                deleteItem(name, items[key])
             }
         }
     }
