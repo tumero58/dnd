@@ -1,6 +1,7 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
 import { changeDragging } from "@/redux/features/dndSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { deleteItem, findItem } from "@/utils/gridItems";
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
@@ -12,21 +13,20 @@ const DragItem = ({
 }: any) => {
     const changeItemPosition = (item: any, position: any) => {
         setItems((items: any) => {
-            const itemToMove = items.mainComponents.find((newItem: any) => newItem.name === item.name);
+            const newItems = { ...items };
+            const itemToMove = findItem(item.name, newItems);
 
             const positionChain = position.split("-");
             positionChain.shift()
+            
             const changePositionKey = positionChain[0];
-
-            const newItems = { ...items };
-
             if (changePositionKey === "mainPosition") {
                 newItems[changePositionKey] = [...newItems[changePositionKey], itemToMove]
             } else {
                 newItems[changePositionKey].mainComponents = [itemToMove];
+                deleteItem(item.name, newItems);
             }
             return newItems;
-            // newItems.mainComponents = newItems.mainComponents.filter((currentItem: any) => currentItem.name !== itemToMove.name);
         })
     }
 
