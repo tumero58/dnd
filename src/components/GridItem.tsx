@@ -37,7 +37,7 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
             return
         };
         if (isDragging) {
-            const element = document.getElementsByClassName(className)[0];
+            const element = document.getElementsByClassName(`${className}screen`)[0];
             if (element) {
                 setScreenWidth(element.clientWidth);
                 setScreenHeight(element.clientHeight)
@@ -53,7 +53,7 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
             paddingTop: "26px",
             border: "1px solid grey",
             borderRadius: "4px",
-        }} className={className}>
+        }} className={`${className}screen`}>
             <Box sx={{
                 display: "flex",
                 position: "absolute",
@@ -105,48 +105,54 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
                     borderRadius: "4px"
                 }}>
                     <Box sx={{
-                        height: "26px",
-                        width: "100%",
-                    }}>
-                        <DropAreaGrid position="mainComponents"></DropAreaGrid>
-                    </Box>
-                    <Box sx={{
-                        paddingTop: "26px",
                         width: "100%",
                         height: "100%",
                         display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center"
+                        flexDirection: "column"
                     }}>
                         <Box sx={{
-                            width: screenWidth / 2,
-                            height: screenHeight / 4
+                            height: "26px",
+                            width: "100%",
                         }}>
-                            <DropAreaGrid position="topComponents"></DropAreaGrid>
+                            <DropAreaGrid position={`${className}-mainComponents`}></DropAreaGrid>
                         </Box>
                         <Box sx={{
+                            width: "100%",
+                            height: "100%",
                             display: "flex",
-                            justifyContent: "space-between",
-                            width: "100%"
+                            flexDirection: "column",
+                            alignItems: "center"
                         }}>
                             <Box sx={{
-                                height: screenHeight / 2,
-                                width: screenWidth / 4
+                                width: screenWidth / 2,
+                                height: (screenHeight / 4) - 26
                             }}>
-                                <DropAreaGrid position="leftComponents"></DropAreaGrid>
+                                <DropAreaGrid position={`${className}-topComponents`}></DropAreaGrid>
                             </Box>
                             <Box sx={{
-                                height: screenHeight / 2,
-                                width: screenWidth / 4
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "100%"
                             }}>
-                                <DropAreaGrid position="rightComponents"></DropAreaGrid>
+                                <Box sx={{
+                                    height: screenHeight / 2,
+                                    width: screenWidth / 4
+                                }}>
+                                    <DropAreaGrid position={`${className}-leftComponents`}></DropAreaGrid>
+                                </Box>
+                                <Box sx={{
+                                    height: screenHeight / 2,
+                                    width: screenWidth / 4
+                                }}>
+                                    <DropAreaGrid position={`${className}-rightComponents`}></DropAreaGrid>
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box sx={{
-                            width: screenWidth / 2,
-                            height: screenHeight / 4
-                        }}>
-                            <DropAreaGrid position="bottomComponents"></DropAreaGrid>
+                            <Box sx={{
+                                width: screenWidth / 2,
+                                height: (screenHeight / 4)
+                            }}>
+                                <DropAreaGrid position={`${className}-bottomComponents`}></DropAreaGrid>
+                            </Box>
                         </Box>
                     </Box>
                 </Box> : <></>}

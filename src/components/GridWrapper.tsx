@@ -145,7 +145,7 @@ const GridWrapper = () => {
             border: "1px solid grey",
             borderRadius: "4px",
         }}>
-            {renderGridItems(gridItems, "main")}
+            {renderGridItems(gridItems)}
         </Box>
     )
 };

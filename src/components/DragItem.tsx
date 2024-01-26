@@ -13,9 +13,18 @@ const DragItem = ({
     const changeItemPosition = (item: any, position: any) => {
         setItems((items: any) => {
             const itemToMove = items.mainComponents.find((newItem: any) => newItem.name === item.name);
-            let newItems = { ...items };
-            newItems[position].mainComponents = [itemToMove];
-            newItems.mainComponents = newItems.mainComponents.filter((currentItem: any) => currentItem.name !== itemToMove.name);
+
+            const positionChain = position.split("-");
+            positionChain.shift()
+            const changePositionKey = positionChain[0];
+
+            const newItems = { ...items };
+            
+            if (changePositionKey === "mainPosition") {
+                newItems[changePositionKey] = [...newItems[changePositionKey], itemToMove]
+            } else {
+                newItems[changePositionKey].mainComponents = [itemToMove];
+            }
             return newItems;
         })
     }
