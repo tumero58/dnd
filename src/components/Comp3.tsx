@@ -5,8 +5,7 @@ const Comp3 = () => {
         <Box
             sx={{
                 fontSize: 40,
-                fontWeight: 'bold',
-                cursor: 'move',
+                fontWeight: 'bold'
             }}
         >
             Comp3
