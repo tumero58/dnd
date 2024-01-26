@@ -33,9 +33,6 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
     const [screenHeight, setScreenHeight] = useState(0);
 
     useEffect(() => {
-        if (screenHeight && screenWidth) {
-            return
-        };
         if (isDragging) {
             const element = document.getElementsByClassName(`${className}screen`)[0];
             if (element) {
@@ -43,7 +40,7 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
                 setScreenHeight(element.clientHeight)
             }
         }
-    }, [isDragging, className, screenHeight, screenWidth])
+    }, [isDragging, className]);
 
     return (
         <Box sx={{
