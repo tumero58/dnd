@@ -16,7 +16,11 @@ const DropAreaGrid = ({ position, children }: any) => {
         <Box sx={{
             height: "100%",
             width: "100%",
-            background: isOver ? "green" : "yellow"
+            background: isOver ? "rgba(0, 128, 0,0.5)" : "rgba(255,255,0,0.5)",
+            border: "4px solid",
+            borderColor: isOver ? "rgba(0, 128, 0,0.8)" : "rgba(255,255,0,0.8)",
+            borderRadius: "16px",
+            backdropFilter: "blur(3px)"
         }} className={position} ref={drop}>
             {children}
         </Box>

@@ -105,6 +105,13 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
                     borderRadius: "4px"
                 }}>
                     <Box sx={{
+                        height: "26px",
+                        width: "100%",
+                    }}>
+                        <DropAreaGrid position="mainComponents"></DropAreaGrid>
+                    </Box>
+                    <Box sx={{
+                        paddingTop: "26px",
                         width: "100%",
                         height: "100%",
                         display: "flex",
