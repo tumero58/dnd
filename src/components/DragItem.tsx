@@ -15,15 +15,16 @@ const insertItem = (item: any, positionChain: string[], items: any) => {
             break;
         }
         if (key === "mainComponents") {
-            items[key] = [...items[key], item]
+            const itemsIds = items[key].map((item: any) => item.id);
+            if (!itemsIds?.includes(item.id)) {
+                items[key] = [...items[key], item]
+            }
         } else {
-            console.log(items[key], "items");
             items[key] = {
                 mainComponents: [
                     item
                 ]
             }
-            // deleteItem(item.name, items);
         }
     }
 }
@@ -42,13 +43,6 @@ const DragItem = ({
             const positionChain = position.split("-");
             positionChain.shift()
 
-            // const changePositionKey = positionChain[0];
-            // if (changePositionKey === "mainPosition") {
-            //     newItems[changePositionKey] = [...newItems[changePositionKey], itemToMove]
-            // } else {
-            //     newItems[changePositionKey].mainComponents = [itemToMove];
-            //     deleteItem(item.name, newItems);
-            // }
             insertItem(itemToMove, positionChain, newItems);
 
             console.log({
