@@ -1,37 +1,10 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
 import { changeDragging } from "@/redux/features/dndSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { findItem } from "@/utils/gridItems";
+import { deleteItem, findItem, insertItem } from "@/utils/gridItems";
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-
-const insertItem = (item: any, positionChain: string[], items: any) => {
-    for (let i = 0; i < positionChain.length; i++) {
-        const key = positionChain[i];
-        if (positionChain[i + 1]) {
-            positionChain.shift()
-            insertItem(item, positionChain, items[key]);
-            break;
-        }
-        if (key === "mainComponents") {
-            const itemsIds = items[key].map((item: any) => item.id);
-            if (!itemsIds?.includes(item.id)) {
-                items[key] = [...items[key], item]
-            }
-        } else {
-            items[key] = {
-                ...items[key],
-                mainComponents: items[key]?.mainComponents ? [
-                    ...items[key].mainComponents,
-                    item
-                ] : [
-                    item
-                ]
-            }
-        }
-    }
-}
 
 const DragItem = ({
     name,
@@ -43,7 +16,6 @@ const DragItem = ({
 
             const newItems = { ...items };
             const itemToMove = findItem(item.name, newItems);
-
             const positionChain = position.split("-");
             positionChain.shift()
 
