@@ -58,28 +58,21 @@ export const deleteItem = (name: string, items: any): any => {
 };
 
 export const insertItem = (item: any, positionChain: string[], items: any) => {
-    for (let i = 0; i < positionChain.length; i++) {
-        const key = positionChain[i];
-        if (positionChain[i + 1]) {
-            positionChain.shift()
-            insertItem(item, positionChain, items[key]);
-            break;
+    if (positionChain.length > 1) {
+        const nextKey = positionChain.shift();
+        if (nextKey) {
+            insertItem(item, positionChain, items[nextKey])
         }
+    } else {
+        const key = positionChain[0];
         if (key === "mainComponents") {
-            const itemsIds = items[key].map((item: any) => item.id);
-            if (!itemsIds?.includes(item?.id)) {
-                                items[key] = [...items[key], item]
-            }
+            items[key] = [...items[key], item]
         } else {
             items[key] = {
-                ...items[key],
-                mainComponents: items[key]?.mainComponents ? [
-                    ...items[key].mainComponents,
-                    item
-                ] : [
-                    item
-                ]
-            }
+                mainComponents: []
+            };
+            insertItem(item, ["mainComponents"], items[key])
         }
     }
+
 }

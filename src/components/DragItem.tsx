@@ -21,11 +21,6 @@ const DragItem = ({
 
             insertItem(itemToMove, positionChain, newItems);
 
-            console.log({
-                itemToMove,
-                position
-            });
-
             return { ...newItems };
         })
     }
