@@ -21,7 +21,11 @@ const insertItem = (item: any, positionChain: string[], items: any) => {
             }
         } else {
             items[key] = {
-                mainComponents: [
+                ...items[key],
+                mainComponents: items[key]?.mainComponents ? [
+                    ...items[key].mainComponents,
+                    item
+                ] : [
                     item
                 ]
             }

@@ -34,7 +34,7 @@ export const findItem = (name: string, items: any): any => {
             if (key !== "mainComponents") {
                 const foundItem = findItem(name, items[key])
                 if (foundItem) {
-                    return foundItem;
+                    break;
                 }
             }
         }
@@ -42,7 +42,7 @@ export const findItem = (name: string, items: any): any => {
 };
 
 export const deleteItem = (name: string, items: any): any => {
-    const foundItem = items.mainComponents?.find((item: any) => item.name === name);    
+    const foundItem = items.mainComponents?.find((item: any) => item.name === name);
     if (foundItem) {
         items.mainComponents = items.mainComponents?.filter((item: any) => item.name !== name);
     } else {
