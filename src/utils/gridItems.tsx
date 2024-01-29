@@ -54,6 +54,7 @@ export const deleteItem = (name: string, items: any): any => {
             }
         }
     }
+    return items;
 };
 
 export const insertItem = (item: any, positionChain: string[], items: any) => {
@@ -67,7 +68,7 @@ export const insertItem = (item: any, positionChain: string[], items: any) => {
         if (key === "mainComponents") {
             const itemsIds = items[key].map((item: any) => item.id);
             if (!itemsIds?.includes(item?.id)) {
-                items[key] = [...items[key], item]
+                                items[key] = [...items[key], item]
             }
         } else {
             items[key] = {

@@ -13,9 +13,9 @@ const DragItem = ({
 }: any) => {
     const changeItemPosition = (item: any, position: any) => {
         setItems((items: any) => {
+            const itemToMove = findItem(item.name, items);
+            const newItems = deleteItem(item.name, items);
 
-            const newItems = { ...items };
-            const itemToMove = findItem(item.name, newItems);
             const positionChain = position.split("-");
             positionChain.shift()
 
@@ -26,7 +26,7 @@ const DragItem = ({
                 position
             });
 
-            return newItems;
+            return { ...newItems };
         })
     }
 
