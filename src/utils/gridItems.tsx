@@ -34,7 +34,7 @@ export const findItem = (name: string, items: any): any => {
             if (key !== "mainComponents") {
                 const foundItem = findItem(name, items[key])
                 if (foundItem) {
-                    break;
+                    return foundItem;
                 }
             }
         }
