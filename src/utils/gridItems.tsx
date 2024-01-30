@@ -57,6 +57,19 @@ export const deleteItem = (name: string, items: any): any => {
     return items;
 };
 
+const getOppositeKey = (key: string) => {
+    switch (key) {
+        case "leftComponents":
+            return "rightComponents";
+        case "rightComponents":
+            return "leftComponents";
+        case "topComponents":
+            return "bottomComponents";
+        default:
+            return "topComponents";
+    }
+}
+
 export const insertItem = (item: any, positionChain: string[], items: any) => {
     if (positionChain.length > 1) {
         const nextKey = positionChain.shift();
@@ -68,11 +81,32 @@ export const insertItem = (item: any, positionChain: string[], items: any) => {
         if (key === "mainComponents") {
             items[key] = [...items[key], item]
         } else {
+            const oppositeKey = getOppositeKey(key);
+            items[oppositeKey] = {
+                ...items
+            };
+            items.mainComponents = [];
             items[key] = {
                 mainComponents: []
             };
             insertItem(item, ["mainComponents"], items[key])
         }
     }
+};
 
+export const cleanEmptyPositions = (items: any, prevKey: string = "", prevItems: any = {}) => {
+    const keys = Object.keys(items);
+    if (keys.length === 0) {
+        return;
+    }
+    if (keys.length === 1) {
+        if (keys[0] === "mainComponents" && items.mainComponents.length === 0) {
+            delete prevItems[prevKey];
+        }
+    } else {
+        keys.forEach((key: string) => {
+            cleanEmptyPositions(items[key], key, items)
+        })
+    }
 }
+
