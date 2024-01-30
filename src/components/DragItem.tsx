@@ -1,7 +1,7 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
 import { changeDragging } from "@/redux/features/dndSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { cleanEmptyPositions, deleteItem, findItem, insertItem, objectDepth } from "@/utils/gridItems";
+import { deleteItem, findItem, insertItem, itemsCleanup } from "@/utils/gridItems";
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
@@ -19,12 +19,7 @@ const DragItem = ({
             const itemToMove = findItem(item.name, items);
             const newItems = deleteItem(item.name, items);
             insertItem(itemToMove, positionChain, newItems);
-
-            const depth = objectDepth(newItems);
-            const repeatAmount = (depth / 3).toFixed();
-            for (let i = 0; i < +repeatAmount; i++) {
-                cleanEmptyPositions(newItems);
-            }
+            itemsCleanup(newItems);
 
             return { ...newItems };
         })

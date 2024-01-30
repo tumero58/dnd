@@ -112,3 +112,11 @@ export const cleanEmptyPositions = (items: any, prevKey: string = "", prevItems:
 
 export const objectDepth = (o: any): any =>
     Object(o) === o ? 1 + Math.max(-1, ...Object.values(o).map(objectDepth)) : 0
+
+export const itemsCleanup = (items: any) => {
+    const depth = objectDepth(items);
+    const repeatAmount = (depth / 3).toFixed();
+    for (let i = 0; i < +repeatAmount; i++) {
+        cleanEmptyPositions(items);
+    }
+}
