@@ -4,6 +4,7 @@ import DragItem from "./DragItem";
 import { useSelector } from "react-redux";
 import { getDndDragging } from "@/redux/features/dndSlice";
 import DropAreaGrid from "./DropAreaGrid";
+import { deleteItem, itemsCleanup } from "@/utils/gridItems";
 
 const GridItem = ({ items, setItems, className }: { items: any, setItems: any, className: any }) => {
     const isDragging = useSelector(getDndDragging);
@@ -15,7 +16,11 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
     };
 
     const handleClose = (item: any) => {
-        console.log(`${item.name} closed`);
+        setItems((items: any) => {
+            const newItems = deleteItem(item.name, items);
+            itemsCleanup(newItems);
+            return { ...newItems };
+        })
     };
 
     useEffect(() => {
