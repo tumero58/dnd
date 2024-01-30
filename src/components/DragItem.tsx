@@ -20,6 +20,7 @@ const DragItem = ({
             const newItems = deleteItem(item.name, items);
             insertItem(itemToMove, positionChain, newItems);
             cleanEmptyPositions(newItems);
+            cleanEmptyPositions(newItems);
 
             return { ...newItems };
         })
