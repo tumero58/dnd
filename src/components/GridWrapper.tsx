@@ -1,4 +1,4 @@
-import { gridItems2 } from "@/utils/gridItems";
+import { gridItemsDefault } from "@/utils/gridItems";
 import { Box } from "@mui/material";
 import { useState } from "react";
 import GridItem from "./GridItem";
@@ -6,7 +6,7 @@ import GridItem from "./GridItem";
 const GridWrapper = () => {
     const [gridItems, setGridItems] = useState({
         mainComponents: [
-            ...gridItems2
+            ...gridItemsDefault
         ]
     })
 
