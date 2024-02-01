@@ -47,10 +47,9 @@ const GridWrapper = () => {
             <Box sx={{
                 display: "flex",
                 flexDirection: directionColumn ? "column" : "row",
-                justifyContent: "space-between",
                 height: "100%",
                 width: "100%"
-            }}>
+            }} id={`${parentClassName}`}>
                 {beforeMainItems ?
                     renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
                 }
