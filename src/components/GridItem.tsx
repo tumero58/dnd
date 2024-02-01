@@ -48,38 +48,6 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
         }
     }, [isDragging, className]);
 
-    useEffect(() => {
-        const parentElement = document.getElementById(`${className}screen`)?.parentElement?.parentElement;
-        const element = document.getElementById(`${className}screen`);
-        const currentParent = document.getElementById(`${className}`);
-        const currentParentSibling = currentParent?.nextElementSibling;
-        const resizer = document.getElementById(`${className}resize-right`);
-
-        let mousedown = false;
-
-        if (resizer && element && parentElement && currentParent) {
-            resizer.addEventListener('mousedown', function (e) {
-                mousedown = true;
-            }, true);
-            parentElement.addEventListener('mouseup', function (e) {
-                if (mousedown) {
-                    currentParent.style.transition = "1s all ease";
-                    currentParent.style.width = e.clientX + "px";
-                    if (currentParentSibling) {
-                        (currentParentSibling as HTMLElement).style.transition = "1s all ease";
-                        (currentParentSibling as HTMLElement).style.width = parentElement.clientWidth - e.clientX + "px";
-                    }
-                    mousedown = false;
-                }
-            }, true);
-            parentElement.addEventListener('mousemove', function (e) {
-                if (mousedown) {
-                    resizer.style.left = e.clientX - 4 + 'px';
-                }
-            }, true);
-        }
-    }, [className]);
-
     return (
         <Box sx={{
             width: "100%",
@@ -129,26 +97,6 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
                 ))}
             </Box>
             {items?.find((item: any) => item.id === activeItem?.id)?.component}
-            <Box sx={{
-                position: "absolute",
-                zIndex: 1,
-                left: screenWidth - 4,
-                top: screenHeight / 2,
-                height: "60px",
-                width: 0,
-                border: "4px solid black",
-                borderRadius: "4px",
-                cursor: "col-resize",
-                // opacity: 1,
-                // ":hover": {
-                //     opacity: 0.7
-                // },
-                ":active": {
-                    opacity: 0.5,
-                    height: screenHeight,
-                    top: 0
-                }
-            }} id={`${className}resize-right`}></Box>
             {isDragging ?
                 <Box sx={{
                     position: "absolute",
