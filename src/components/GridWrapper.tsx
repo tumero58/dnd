@@ -1,6 +1,6 @@
 import { gridItemsDefault } from "@/utils/gridItems";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import GridItem from "./GridItem";
 
 const GridWrapper = () => {
@@ -48,7 +48,8 @@ const GridWrapper = () => {
                 display: "flex",
                 flexDirection: directionColumn ? "column" : "row",
                 height: "100%",
-                width: "100%"
+                width: "100%",
+                position: "relative"
             }} id={`resizeWrapper${parentClassName}`}>
                 {beforeMainItems ?
                     renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
@@ -72,13 +73,15 @@ const GridWrapper = () => {
                 const resizer = document.createElement("div");
                 resizer.style.position = "absolute";
                 resizer.style.zIndex = "1";
-                resizer.style.left = leftElement?.clientWidth + 13 + "px";
-                resizer.style.top = leftElement?.clientHeight / 2 - 15 + "px";
+                resizer.style.left = leftElement?.clientWidth + "px";
+                resizer.style.top = leftElement?.clientHeight / 2 + "px";
+                resizer.style.transform = "translate(-50%, -50%)";
                 resizer.style.height = "60px";
                 resizer.style.width = "0";
                 resizer.style.border = "4px solid black";
                 resizer.style.borderRadius = "4px";
                 resizer.style.cursor = "col-resize";
+                resizer.className = "resizer";
                 leftElement.appendChild(resizer);
 
                 const parentElement = document.getElementById(`${resizeClassName}`);
@@ -86,6 +89,7 @@ const GridWrapper = () => {
 
 
                 let mousedown = false;
+                let movXDefault = leftElement?.clientWidth;
 
 
                 if (resizer && parentElement) {
@@ -95,39 +99,60 @@ const GridWrapper = () => {
                     parentElement.addEventListener('mouseup', function (e) {
                         if (mousedown) {
                             leftElement.style.transition = "1s all ease";
-                            leftElement.style.width = e.clientX - 13 + "px";
+                            leftElement.style.width = movXDefault + "px";
                             if (currentParentSibling) {
                                 (currentParentSibling as HTMLElement).style.transition = "1s all ease";
-                                (currentParentSibling as HTMLElement).style.width = parentElement.clientWidth - e.clientX + 13 + "px";
+                                (currentParentSibling as HTMLElement).style.width = parentElement.clientWidth - movXDefault + "px";
                             }
                             mousedown = false;
                         }
                     }, true);
                     parentElement.addEventListener('mousemove', function (e) {
                         if (mousedown) {
-                            resizer.style.left = e.clientX + 'px';
+                            movXDefault += e.movementX;
+                            resizer.style.left = movXDefault + 'px';
                         }
                     }, true);
                 }
-
                 const removeCb = () => {
-                    leftElement.removeChild(resizer);
+                    if (leftElement.contains(resizer)) {
+                        leftElement.removeChild(resizer);
+                    }
                 };
                 return removeCb;
-
-
             }
         }
     }
 
-    useEffect(() => {
-        const removeCb = createResize(gridItems);
-        return (() => {
-            if (removeCb) {
-                removeCb();
+    const createResizeAll = useCallback((gridItems: any, className: string = "resizeWrapper", callbackArray: any[] = []) => {
+        const callbackFns: any[] = [...callbackArray];
+        const removeCb = createResize(gridItems, className);
+        callbackFns.push(removeCb);
+
+        const keys = Object.keys(gridItems);
+        keys.forEach((key: string) => {
+            if (key === "mainComponents") {
+                return
+            } else {
+                createResizeAll((gridItems as any)[key], `${className}-${key}`, callbackFns)
+                callbackFns.push(removeCb);
             }
         })
-    }, [gridItems])
+        return callbackFns;
+    }, []);
+
+    useEffect(() => {
+        const callbacks = createResizeAll(gridItems, "resizeWrapper", []);
+        return (() => {
+            if (callbacks.length !== 0) {
+                callbacks.forEach((fn: Function) => {
+                    if (fn) {
+                        fn()
+                    }
+                })
+            }
+        })
+    }, [gridItems, createResizeAll])
 
 
     return (
