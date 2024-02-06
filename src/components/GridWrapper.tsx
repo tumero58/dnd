@@ -81,6 +81,7 @@ const GridWrapper = () => {
                 resizer.style.border = "4px solid black";
                 resizer.style.borderRadius = "4px";
                 resizer.style.cursor = "col-resize";
+                resizer.className = "resizer-horizontal";
                 resizer.id = `resizer${resizeClassName}`;
                 leftElement.appendChild(resizer);
 
@@ -122,7 +123,8 @@ const GridWrapper = () => {
                 };
                 return removeCb;
             }
-        } if (gridItems.leftComponents && !gridItems.rightComponents) {
+        }
+        if (gridItems.leftComponents && !gridItems.rightComponents) {
             const resizer = document.getElementById(`resizer${resizeClassName}`);
             if (resizer) {
                 resizer.remove();
@@ -135,7 +137,8 @@ const GridWrapper = () => {
                     (currentParentSibling as HTMLElement).style.width = "100%"
                 }
             }
-        } if (!gridItems.leftComponents && gridItems.rightComponents) {
+        }
+        if (!gridItems.leftComponents && gridItems.rightComponents) {
             const rightElement = document.getElementById(`${resizeClassName}-rightComponents`);
             if (rightElement) {
                 rightElement.style.width = "100%";
@@ -176,6 +179,20 @@ const GridWrapper = () => {
             }
         })
     }, [gridItems, createResizeAll])
+
+    useEffect(() => {
+        const observer = new MutationObserver(list => {
+            if (list.length > 1) {
+                const resizerList = document.getElementsByClassName("resizer-horizontal");
+                if (resizerList.length !== 0) {
+                    for (let i = 0; i < resizerList.length; i++) {
+                        (resizerList[i] as HTMLElement).style.left = "100%";
+                    }
+                }
+            }
+        });
+        observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+    }, [])
 
 
     return (
