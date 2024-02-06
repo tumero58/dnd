@@ -132,6 +132,12 @@ const GridWrapper = () => {
             const leftElement = document.getElementById(`${resizeClassName}-leftComponents`);
             if (leftElement) {
                 leftElement.style.width = "100%";
+                const resizerList = leftElement.getElementsByClassName("resizer-horizontal");
+                if (resizerList.length !== 0) {
+                    for (let i = 0; i < resizerList.length; i++) {
+                        (resizerList[i] as HTMLElement).remove()
+                    }
+                }
                 const currentParentSibling = leftElement.nextElementSibling;
                 if (currentParentSibling) {
                     (currentParentSibling as HTMLElement).style.width = "100%"
@@ -142,6 +148,12 @@ const GridWrapper = () => {
             const rightElement = document.getElementById(`${resizeClassName}-rightComponents`);
             if (rightElement) {
                 rightElement.style.width = "100%";
+                const resizerList = rightElement.getElementsByClassName("resizer-horizontal");
+                if (resizerList.length !== 0) {
+                    for (let i = 0; i < resizerList.length; i++) {
+                        (resizerList[i] as HTMLElement).remove()
+                    }
+                }
                 const currentParentSibling = rightElement.nextElementSibling;
                 if (currentParentSibling) {
                     (currentParentSibling as HTMLElement).style.width = "100%"
