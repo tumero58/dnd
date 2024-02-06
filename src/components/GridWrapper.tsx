@@ -98,11 +98,12 @@ const GridWrapper = () => {
                     }, true);
                     parentElement.addEventListener('mouseup', function (e) {
                         if (mousedown) {
+                            const moveXPercent = movXDefault * 100 / parentElement.clientWidth;
                             leftElement.style.transition = "1s all ease";
-                            leftElement.style.width = movXDefault + "px";
+                            leftElement.style.width = moveXPercent + "%";
                             if (currentParentSibling) {
                                 (currentParentSibling as HTMLElement).style.transition = "1s all ease";
-                                (currentParentSibling as HTMLElement).style.width = parentElement.clientWidth - movXDefault + "px";
+                                (currentParentSibling as HTMLElement).style.width = 100 - moveXPercent + "%";
                             }
                             mousedown = false;
                         }
@@ -125,13 +126,13 @@ const GridWrapper = () => {
             const resizer = document.getElementById(`resizer${resizeClassName}`);
             if (resizer) {
                 resizer.remove();
-                const leftElement = document.getElementById(`${resizeClassName}-leftComponents`);
-                if (leftElement) {
-                    leftElement.style.width = "100%";
-                    const currentParentSibling = leftElement.nextElementSibling;
-                    if (currentParentSibling) {
-                        (currentParentSibling as HTMLElement).style.width = "100%"
-                    }
+            }
+            const leftElement = document.getElementById(`${resizeClassName}-leftComponents`);
+            if (leftElement) {
+                leftElement.style.width = "100%";
+                const currentParentSibling = leftElement.nextElementSibling;
+                if (currentParentSibling) {
+                    (currentParentSibling as HTMLElement).style.width = "100%"
                 }
             }
         } if (!gridItems.leftComponents && gridItems.rightComponents) {
