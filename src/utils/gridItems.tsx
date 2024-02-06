@@ -1,7 +1,6 @@
 import Comp1 from "@/components/Comp1";
 import Comp2 from "@/components/Comp2";
 import Comp3 from "@/components/Comp3";
-import Comp4 from "@/components/Comp4";
 import { ReactElement } from "react";
 
 export interface IGridItems {
@@ -12,8 +11,7 @@ export interface IGridItems {
 export const gridItemsDefault: IGridItems[] = [
     { id: 1, name: "Comp1", component: <Comp1 /> },
     { id: 2, name: "Comp2", component: <Comp2 /> },
-    { id: 3, name: "Comp3", component: <Comp3 /> },
-    { id: 4, name: "Comp4", component: <Comp4 /> },
+    { id: 3, name: "Comp3", component: <Comp3 /> }
 ]
 
 export const findItem = (name: string, items: any): any => {

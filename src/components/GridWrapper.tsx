@@ -196,6 +196,7 @@ const GridWrapper = () => {
                 if (resizerList.length !== 0) {
                     for (let i = 0; i < resizerList.length; i++) {
                         (resizerList[i] as HTMLElement).style.left = "100%";
+                        (resizerList[i] as HTMLElement).style.width = "0";
                     }
                 }
             }
