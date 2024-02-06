@@ -81,7 +81,7 @@ const GridWrapper = () => {
                 resizer.style.border = "4px solid black";
                 resizer.style.borderRadius = "4px";
                 resizer.style.cursor = "col-resize";
-                resizer.className = "resizer";
+                resizer.id = `resizer${resizeClassName}`;
                 leftElement.appendChild(resizer);
 
                 const parentElement = document.getElementById(`${resizeClassName}`);
@@ -120,6 +120,28 @@ const GridWrapper = () => {
                     }
                 };
                 return removeCb;
+            }
+        } if (gridItems.leftComponents && !gridItems.rightComponents) {
+            const resizer = document.getElementById(`resizer${resizeClassName}`);
+            if (resizer) {
+                resizer.remove();
+                const leftElement = document.getElementById(`${resizeClassName}-leftComponents`);
+                if (leftElement) {
+                    leftElement.style.width = "100%";
+                    const currentParentSibling = leftElement.nextElementSibling;
+                    if (currentParentSibling) {
+                        (currentParentSibling as HTMLElement).style.width = "100%"
+                    }
+                }
+            }
+        } if (!gridItems.leftComponents && gridItems.rightComponents) {
+            const rightElement = document.getElementById(`${resizeClassName}-rightComponents`);
+            if (rightElement) {
+                rightElement.style.width = "100%";
+                const currentParentSibling = rightElement.nextElementSibling;
+                if (currentParentSibling) {
+                    (currentParentSibling as HTMLElement).style.width = "100%"
+                }
             }
         }
     }
