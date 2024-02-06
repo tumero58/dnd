@@ -90,8 +90,6 @@ const GridWrapper = () => {
 
 
                 let mousedown = false;
-                let movXDefault = leftElement?.clientWidth;
-
 
                 if (resizer && parentElement) {
                     resizer.addEventListener('mousedown', function (e) {
@@ -99,7 +97,7 @@ const GridWrapper = () => {
                     }, true);
                     parentElement.addEventListener('mouseup', function (e) {
                         if (mousedown) {
-                            const moveXPercent = movXDefault * 100 / parentElement.clientWidth;
+                            const moveXPercent = e.clientX * 100 / parentElement.clientWidth;
                             leftElement.style.transition = "1s all ease";
                             leftElement.style.width = moveXPercent + "%";
                             if (currentParentSibling) {
@@ -111,8 +109,7 @@ const GridWrapper = () => {
                     }, true);
                     parentElement.addEventListener('mousemove', function (e) {
                         if (mousedown) {
-                            movXDefault += e.movementX;
-                            resizer.style.left = movXDefault + 'px';
+                            resizer.style.left = e.clientX - 13 + 'px';
                         }
                     }, true);
                 }
