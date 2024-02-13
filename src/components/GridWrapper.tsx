@@ -63,7 +63,7 @@ const GridWrapper = () => {
         )
     }
 
-    const createResize = (gridItems: any, resizeClassName: string = "resizeWrapper") => {
+    const createResizeHorizontal = (gridItems: any, resizeClassName: string = "resizeWrapper") => {
         if (!gridItems) {
             return;
         }
@@ -92,10 +92,10 @@ const GridWrapper = () => {
                 let mousedown = false;
 
                 if (resizer && parentElement) {
-                    resizer.addEventListener('mousedown', function (e) {
+                    resizer.addEventListener('mousedown', function () {
                         mousedown = true;
                     }, true);
-                    parentElement.addEventListener('mouseup', function (e) {
+                    parentElement.addEventListener('mouseup', function () {
                         if (mousedown) {
                             const movX = leftElement.clientWidth + resizerMoveX;
                             const moveXPercent = movX * 100 / parentElement.clientWidth;
@@ -163,9 +163,9 @@ const GridWrapper = () => {
         }
     }
 
-    const createResizeAll = useCallback((gridItems: any, className: string = "resizeWrapper", callbackArray: any[] = []) => {
+    const createResizeHorizontalAll = useCallback((gridItems: any, className: string = "resizeWrapper", callbackArray: any[] = []) => {
         const callbackFns: any[] = [...callbackArray];
-        const removeCb = createResize(gridItems, className);
+        const removeCb = createResizeHorizontal(gridItems, className);
         callbackFns.push(removeCb);
 
         const keys = Object.keys(gridItems);
@@ -173,7 +173,7 @@ const GridWrapper = () => {
             if (key === "mainComponents") {
                 return
             } else {
-                createResizeAll((gridItems as any)[key], `${className}-${key}`, callbackFns)
+                createResizeHorizontalAll((gridItems as any)[key], `${className}-${key}`, callbackFns)
                 callbackFns.push(removeCb);
             }
         })
@@ -181,7 +181,7 @@ const GridWrapper = () => {
     }, []);
 
     useEffect(() => {
-        const callbacks = createResizeAll(gridItems, "resizeWrapper", []);
+        const callbacks = createResizeHorizontalAll(gridItems, "resizeWrapper", []);
         return (() => {
             if (callbacks.length !== 0) {
                 callbacks.forEach((fn: Function) => {
@@ -191,7 +191,7 @@ const GridWrapper = () => {
                 })
             }
         })
-    }, [gridItems, createResizeAll])
+    }, [gridItems, createResizeHorizontalAll])
 
     useEffect(() => {
         const observer = new MutationObserver(list => {
