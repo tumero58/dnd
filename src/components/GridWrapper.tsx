@@ -97,11 +97,8 @@ const GridWrapper = () => {
                     }, true);
                     parentElement.addEventListener('mouseup', function (e) {
                         if (mousedown) {
-                            console.log(e.clientX, "clientx");
-
-                            const moveXPercent = (e.clientX - 15) * 100 / parentElement.clientWidth;
-                            console.log(moveXPercent, "percent");
-
+                            const movX = leftElement.clientWidth + resizerMoveX;
+                            const moveXPercent = movX * 100 / parentElement.clientWidth;
                             leftElement.style.transition = "1s all ease";
                             leftElement.style.width = moveXPercent + "%";
                             if (currentParentSibling) {
@@ -109,11 +106,14 @@ const GridWrapper = () => {
                                 (currentParentSibling as HTMLElement).style.width = 100 - moveXPercent + "%";
                             }
                             mousedown = false;
+                            resizerMoveX = 0;
                         }
                     }, true);
+                    let resizerMoveX = 0;
                     parentElement.addEventListener('mousemove', function (e) {
                         if (mousedown) {
-                            resizer.style.left = e.clientX - 15 + 'px';
+                            resizerMoveX+=e.movementX
+                            resizer.style.left = `calc(100% + ${resizerMoveX}px`;
                         }
                     }, true);
                 }
