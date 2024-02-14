@@ -1,5 +1,5 @@
 import { gridItemsDefault } from "@/utils/gridItems";
-import { createResizeHorizontal, createResizeHorizontalAll } from "@/utils/gridWrapper.utils";
+import { createResizeHorizontal, createResizeHorizontalAll, createResizeVerticalAll } from "@/utils/gridWrapper.utils";
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import GridItem from "./GridItem";
@@ -68,33 +68,59 @@ const GridWrapper = () => {
         return createResizeHorizontalAll(gridItems, className, callbackArray);
     }, []);
 
+    const createResizeVerticalAllCb = useCallback((gridItems: any, className: string = "resizeWrapper", callbackArray: any[] = []) => {
+        return createResizeVerticalAll(gridItems, className, callbackArray);
+    }, []);
+
     useEffect(() => {
-        const callbacks = createResizeHorizontalAllCb(gridItems, "resizeWrapper", []);
+        const callbacksHorizontal = createResizeHorizontalAllCb(gridItems, "resizeWrapper", []);
+        const callbacksVertical = createResizeVerticalAllCb(gridItems, "resizeWrapper", []);
         return (() => {
-            if (callbacks.length !== 0) {
-                callbacks.forEach((fn: Function) => {
+            if (callbacksHorizontal.length !== 0) {
+                callbacksHorizontal.forEach((fn: Function) => {
+                    if (fn) {
+                        fn()
+                    }
+                })
+            }
+            if (callbacksVertical.length !== 0) {
+                callbacksVertical.forEach((fn: Function) => {
                     if (fn) {
                         fn()
                     }
                 })
             }
         })
-    }, [gridItems, createResizeHorizontalAllCb])
+    }, [gridItems, createResizeHorizontalAllCb, createResizeVerticalAllCb])
 
     useEffect(() => {
-        const observer = new MutationObserver(list => {
+        const observerHorizontal = new MutationObserver(list => {
             if (list.length > 1) {
                 const resizerList = document.getElementsByClassName("resizer-horizontal");
                 if (resizerList.length !== 0) {
                     for (let i = 0; i < resizerList.length; i++) {
                         (resizerList[i] as HTMLElement).style.left = "100%";
+                        (resizerList[i] as HTMLElement).style.top = "50%";
                         (resizerList[i] as HTMLElement).style.width = "0";
                     }
                 }
             }
         });
-        observer.observe(document.body, { attributes: true, childList: true, subtree: true });
-    }, [])
+        const observerVertical = new MutationObserver(list => {
+            if (list.length > 1) {
+                const resizerList = document.getElementsByClassName("resizer-vertical");
+                if (resizerList.length !== 0) {
+                    for (let i = 0; i < resizerList.length; i++) {
+                        (resizerList[i] as HTMLElement).style.top = "100%";
+                        (resizerList[i] as HTMLElement).style.left = "50%";
+                        (resizerList[i] as HTMLElement).style.height = "0";
+                    }
+                }
+            }
+        });
+        observerHorizontal.observe(document.body, { attributes: true, childList: true, subtree: true });
+        observerVertical.observe(document.body, { attributes: true, childList: true, subtree: true });
+    }, []);
 
 
     return (

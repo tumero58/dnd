@@ -15,3 +15,15 @@
 .resizer-horizontal:active {
   opacity: 0.7;
 }
+
+.resizer-vertical {
+  opacity: 0;
+}
+
+.resizer-vertical:hover {
+  opacity: 1;
+}
+
+.resizer-vertical:active {
+  opacity: 0.7;
+}
