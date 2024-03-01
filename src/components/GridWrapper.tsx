@@ -1,5 +1,5 @@
 import { gridItemsDefault } from "@/utils/gridItems";
-import { createResizeHorizontal, createResizeHorizontalAll, createResizeVerticalAll } from "@/utils/gridWrapper.utils";
+import { createResizeHorizontalAll, createResizeVerticalAll } from "@/utils/gridWrapper.utils";
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import GridItem from "./GridItem";
