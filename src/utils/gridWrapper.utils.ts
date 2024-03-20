@@ -1,3 +1,4 @@
+//unused
 export const createResizeHorizontal = (gridItems: any, resizeClassName: string = "resizeWrapper") => {
     if (!gridItems) {
         return;
@@ -47,7 +48,7 @@ export const createResizeHorizontal = (gridItems: any, resizeClassName: string =
                 }, true);
                 parentElement.addEventListener('mousemove', function (e) {
                     if (mousedown) {
-                        resizerMoveX+=e.movementX
+                        resizerMoveX += e.movementX
                         resizer.style.left = `calc(100% + ${resizerMoveX}px`;
                     }
                 }, true);
@@ -125,7 +126,7 @@ export const createResizeVertical = (gridItems: any, resizeClassName: string = "
             const resizer = document.createElement("div");
             resizer.style.position = "absolute";
             resizer.style.zIndex = "1";
-            resizer.style.left = topElement?.clientWidth / 2  + "px";
+            resizer.style.left = topElement?.clientWidth / 2 + "px";
             resizer.style.top = topElement?.clientHeight + "px";
             resizer.style.transform = "translate(-50%, -50%)";
             resizer.style.width = "100%";
@@ -164,7 +165,7 @@ export const createResizeVertical = (gridItems: any, resizeClassName: string = "
                 }, true);
                 parentElement.addEventListener('mousemove', function (e) {
                     if (mousedown) {
-                        resizerMoveY+=e.movementY
+                        resizerMoveY += e.movementY
                         resizer.style.top = `calc(100% + ${resizerMoveY}px`;
                     }
                 }, true);
