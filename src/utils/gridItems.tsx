@@ -5,12 +5,12 @@ import Comp4 from "@/components/Comp4";
 import { Box } from "@mui/material";
 import { ReactElement } from "react";
 
-export interface IGridItems {
+export interface IGridItem {
     id: number;
     name: string;
     component: ReactElement;
 }
-export const gridItemsDefault: IGridItems[] = [
+export const gridItemsDefault: IGridItem[] = [
     { id: 1, name: "Comp1", component: <Comp1 /> },
     { id: 2, name: "Comp2", component: <Comp2 /> },
     { id: 3, name: "Comp3", component: <Comp3 /> },
@@ -114,3 +114,43 @@ export const itemsCleanup = (items: any) => {
         cleanEmptyPositions(items);
     }
 }
+
+
+
+// const [gridItems, setGridItems] = useState({
+//     mainComponents: [
+//         { id: 1, name: "Comp1", component: <Comp1 /> },
+//         { id: 2, name: "Comp2", component: <Comp2 /> },
+//         { id: 3, name: "Comp3", component: <Comp3 /> },
+//         { id: 4, name: "Comp4", component: <Comp4 /> },
+//     ],
+//     neighbors: {
+//         direction: "vertical",
+//         mainComponents: [
+//             { id: 1, name: "Comp1", component: <Comp1 /> },
+//             { id: 2, name: "Comp2", component: <Comp2 /> },
+//         ]
+//     }
+// })
+
+// const direction = gridItems.neighbors.direction || "horizontal";
+//         const itemsToRender = [];
+//         itemsToRender.push(gridItems.mainComponents);
+//         if (gridItems?.neighbors?.mainComponents?.length > 0) {
+//             gridItems.neighbors.mainComponents.forEach((item: any) => {
+//                 itemsToRender.push([item])
+//             })
+//         }
+
+//         <PanelGroup direction={direction}>
+//                 {itemsToRender?.map((item: any, index: number) => {
+//                     return (
+//                         <Fragment key={index + 1}>
+//                             <Panel minSize={20}>
+//                                 <GridItem className={""} items={item} setItems={()=>{}} />
+//                             </Panel>
+//                             {index + 1 !== itemsToRender.length ? <PanelResizeHandle /> : <></>}
+//                         </Fragment>
+//                     )
+//                 })}
+//             </PanelGroup>
