@@ -45,7 +45,7 @@ const GridWrapper = () => {
         }
 
         return (
-            <Panel minSize={25}>
+            <Panel minSize={20}>
                 <PanelGroup direction={directionColumn ? "vertical" : "horizontal"}>
                     {beforeMainItems ?
                         renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
