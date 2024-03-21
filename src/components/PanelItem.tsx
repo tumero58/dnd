@@ -4,6 +4,7 @@ import DragItem from "./DragItem";
 import { useSelector } from "react-redux";
 import { getDndDragging } from "@/redux/features/dndSlice";
 import DropAreaGrid from "./DropAreaGrid";
+import { IPanelItem } from "../pages/page2";
 // import { deleteItem, itemsCleanup } from "@/utils/gridItems";
 
 const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, className: any }) => {
@@ -15,11 +16,31 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
         setActiveItem(item);
     };
 
-    const handleClose = (item: any) => {
-        setItems((items: any) => {
-            // const newItems = deleteItem(item.name, items);
-            // itemsCleanup(newItems);
-            // return { ...newItems };
+    const findItem = (panelItem: IPanelItem, positionChain: number[]): any => {
+        const index = positionChain[0];
+        if (!panelItem) {
+            return
+        }
+        if (positionChain.length === 1) {
+            return index ? panelItem?.items?.[index - 1] : panelItem;
+        } else {
+            if (panelItem?.items?.[index - 1]) {
+                positionChain.shift();
+                return findItem(panelItem?.items?.[index - 1], positionChain)
+            }
+        }
+    };
+
+    const handleClose = (itemClicked: any) => {
+        setItems((parentItems: any) => {
+            const positionChain = className.toString().split("-").map((i: string) => +i);
+            const newParentItems = { ...parentItems };
+            const itemFound = findItem(newParentItems, positionChain);
+            itemFound.main = itemFound.main.filter((item: any) => item.id !== itemClicked.id);
+            // if (itemFound.main.length === 0 && itemFound.items.length !== 0) {
+            //     itemFound.main = itemFound.items
+            // }
+            return { ...newParentItems };
         })
     };
 

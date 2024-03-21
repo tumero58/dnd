@@ -7,7 +7,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { IGridItem } from "../utils/gridItems";
 
-interface IPanelItem {
+export interface IPanelItem {
     main: IGridItem[];
     direction: "horizontal" | "vertical";
     items?: IPanelItem[];
@@ -40,8 +40,8 @@ const Page2 = () => {
         ]
     });
 
-    const renderPanelItems = (panelItems: IPanelItem, prevIndex?: number) => {
-        if (!panelItems) {
+    const renderPanelItems = (panelItems: IPanelItem, prevIndex?: number | string) => {
+        if (!panelItems.main) {
             return
         }
         const renderItems: IPanelItem[] = [];
@@ -53,16 +53,19 @@ const Page2 = () => {
                 })
             }
         }
-
         return (
             <PanelGroup direction={panelItems.direction}>
                 {renderItems.map((parentItem: IPanelItem, parentIndex: number) => {
+                    const passIndex = prevIndex ? `${prevIndex}-${parentIndex}` : parentIndex;
+                    if(parentItem.main.length === 0){
+                        return
+                    }
                     return (
                         <Fragment key={parentIndex + 1}>
                             <Panel minSize={10}>
                                 {parentItem.direction === panelItems.direction ?
-                                    <PanelItem className={prevIndex ? `${prevIndex}-${parentIndex}` : parentIndex} items={parentItem.main} setItems={() => { }} /> :
-                                    renderPanelItems(parentItem, parentIndex)}
+                                    <PanelItem className={prevIndex ? `${prevIndex}-${parentIndex}` : parentIndex} items={parentItem.main} setItems={setPanelItems} /> :
+                                    renderPanelItems(parentItem, passIndex)}
                             </Panel>
                             {parentIndex + 1 !== renderItems.length ? <PanelResizeHandle /> : <></>}
                         </Fragment>
