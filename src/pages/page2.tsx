@@ -1,4 +1,4 @@
-import GridItem from "@/components/GridItem";
+import PanelItem from "@/components/PanelItem";
 import { gridItemsDefault } from "@/utils/gridItems";
 import { Box } from "@mui/material";
 import { Fragment, useState } from "react";
@@ -40,7 +40,7 @@ const Page2 = () => {
         ]
     });
 
-    const renderPanelItems = (panelItems: IPanelItem) => {
+    const renderPanelItems = (panelItems: IPanelItem, prevIndex?: number) => {
         if (!panelItems) {
             return
         }
@@ -59,10 +59,10 @@ const Page2 = () => {
                 {renderItems.map((parentItem: IPanelItem, parentIndex: number) => {
                     return (
                         <Fragment key={parentIndex + 1}>
-                            <Panel minSize={20}>
+                            <Panel minSize={10}>
                                 {parentItem.direction === panelItems.direction ?
-                                    <GridItem className={""} items={parentItem.main} setItems={() => { }} /> :
-                                    renderPanelItems(parentItem)}
+                                    <PanelItem className={prevIndex ? `${prevIndex}-${parentIndex}` : parentIndex} items={parentItem.main} setItems={() => { }} /> :
+                                    renderPanelItems(parentItem, parentIndex)}
                             </Panel>
                             {parentIndex + 1 !== renderItems.length ? <PanelResizeHandle /> : <></>}
                         </Fragment>
