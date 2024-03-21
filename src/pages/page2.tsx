@@ -24,8 +24,14 @@ const Page2 = () => {
                 direction: "horizontal"
             },
             {
-                main: [gridItemsDefault[0], gridItemsDefault[1]],
-                direction: "horizontal"
+                main: [gridItemsDefault[1], gridItemsDefault[2]],
+                direction: "vertical",
+                items: [
+                    {
+                        main: [gridItemsDefault[3]],
+                        direction: "horizontal",
+                    },
+                ]
             },
             {
                 main: [gridItemsDefault[2]],
@@ -39,17 +45,11 @@ const Page2 = () => {
             return
         }
         const renderItems: IPanelItem[] = [];
-        renderItems.push({
-            main: panelItems.main,
-            direction: panelItems.direction
-        });
+        renderItems.push(panelItems);
         if (panelItems.items) {
             if (panelItems?.items?.length > 0) {
                 panelItems.items?.forEach((item: IPanelItem) => {
-                    renderItems.push({
-                        main: item.main,
-                        direction: item.direction
-                    })
+                    renderItems.push(item)
                 })
             }
         }
@@ -60,7 +60,9 @@ const Page2 = () => {
                     return (
                         <Fragment key={parentIndex + 1}>
                             <Panel minSize={20}>
-                                <GridItem className={""} items={parentItem.main} setItems={() => { }} />
+                                {parentItem.direction === panelItems.direction ?
+                                    <GridItem className={""} items={parentItem.main} setItems={() => { }} /> :
+                                    renderPanelItems(parentItem)}
                             </Panel>
                             {parentIndex + 1 !== renderItems.length ? <PanelResizeHandle /> : <></>}
                         </Fragment>
