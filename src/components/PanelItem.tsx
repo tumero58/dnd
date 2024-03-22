@@ -40,7 +40,7 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
             if (itemFound.items) {
                 if (itemFound.main.length === 0 && itemFound.items?.length !== 0) {
                     itemFound.main = itemFound.items[0].main;
-                    itemFound.direction = itemFound.items[0].direction;
+                    // itemFound.direction = itemFound.items[0].direction;
                     itemFound.items = itemFound.items[0].items;
                 }
             }
