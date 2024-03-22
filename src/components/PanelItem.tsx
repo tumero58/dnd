@@ -37,9 +37,19 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
             const newParentItems = { ...parentItems };
             const itemFound = findItem(newParentItems, positionChain);
             itemFound.main = itemFound.main.filter((item: any) => item.id !== itemClicked.id);
-            // if (itemFound.main.length === 0 && itemFound.items.length !== 0) {
-            //     itemFound.main = itemFound.items
-            // }
+
+
+            if (itemFound.items) {
+                if (itemFound.main.length === 0 && itemFound.items?.length !== 0) {
+                    console.log(itemFound, "ITEM FUND");
+                    console.log(itemFound.main, "main ");
+                    console.log(itemFound.items, "items ");
+                    itemFound.main = itemFound.items[0].main;
+                    itemFound.items.shift()
+                }
+            }
+
+
             return { ...newParentItems };
         })
     };

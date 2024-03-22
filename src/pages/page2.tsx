@@ -29,7 +29,7 @@ const Page2 = () => {
                 items: [
                     {
                         main: [gridItemsDefault[3]],
-                        direction: "horizontal",
+                        direction: "horizontal"
                     },
                 ]
             },
