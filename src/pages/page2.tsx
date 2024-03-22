@@ -29,7 +29,13 @@ const Page2 = () => {
                 items: [
                     {
                         main: [gridItemsDefault[3]],
-                        direction: "horizontal"
+                        direction: "horizontal",
+                        items: [
+                            {
+                                main: [gridItemsDefault[3]],
+                                direction: "horizontal"
+                            },
+                        ]
                     },
                 ]
             },
@@ -57,7 +63,7 @@ const Page2 = () => {
             <PanelGroup direction={panelItems.direction}>
                 {renderItems.map((parentItem: IPanelItem, parentIndex: number) => {
                     const passIndex = prevIndex ? `${prevIndex}-${parentIndex}` : parentIndex;
-                    if(parentItem.main.length === 0){
+                    if (parentItem.main.length === 0) {
                         return
                     }
                     return (
