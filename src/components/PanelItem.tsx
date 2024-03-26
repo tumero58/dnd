@@ -1,11 +1,42 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
-import DragItem from "./DragItem";
 import { useSelector } from "react-redux";
 import { getDndDragging } from "@/redux/features/dndSlice";
 import DropAreaGrid from "./DropAreaGrid";
 import { IPanelItem } from "../pages/page2";
-// import { deleteItem, itemsCleanup } from "@/utils/gridItems";
+import PanelDragItem from "./PanelDragItem";
+
+export const findItemPanel = (panelItem: IPanelItem, itemToFind: any,parentItem?:any): any => {
+    let isItemFound = false;
+    for (let i = 0; i < panelItem.main.length; i++) {
+        if (panelItem.main[i].name === itemToFind.name) {
+            isItemFound = true;
+            return panelItem;
+        }
+    }
+    if (!isItemFound) {
+        if (panelItem.items && panelItem.items?.length !== 0) {
+            for (let j = 0; j < panelItem.items.length; j++) {
+                const res = findItemPanel(panelItem.items[j], itemToFind);
+                if (res) {
+                    return res
+                }
+            }
+        }
+    }
+
+}
+
+export const deleteItemPanel = (itemFound: any, deleteItem: any) => {
+    itemFound.main = itemFound.main.filter((item: any) => item.name !== deleteItem.name);
+    if (itemFound.items) {
+        if (itemFound.main.length === 0 && itemFound.items?.length !== 0) {
+            itemFound.main = itemFound.items[0].main;
+            // itemFound.direction = itemFound.items[0].direction;
+            itemFound.items = itemFound.items[0].items;
+        }
+    }
+}
 
 const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, className: any }) => {
     const isDragging = useSelector(getDndDragging);
@@ -16,34 +47,11 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
         setActiveItem(item);
     };
 
-    const findItem = (panelItem: IPanelItem, positionChain: number[]): any => {
-        const index = positionChain[0];
-        if (!panelItem) {
-            return
-        }
-        if (positionChain.length === 1) {
-            return index ? panelItem?.items?.[index - 1] : panelItem;
-        } else {
-            if (panelItem?.items?.[index - 1]) {
-                positionChain.shift();
-                return findItem(panelItem?.items?.[index - 1], positionChain)
-            }
-        }
-    };
-
     const handleClose = (itemClicked: any) => {
         setItems((parentItems: any) => {
-            const positionChain = className.toString().split("-").map((i: string) => +i);
             const newParentItems = { ...parentItems };
-            const itemFound = findItem(newParentItems, positionChain);
-            itemFound.main = itemFound.main.filter((item: any) => item.id !== itemClicked.id);
-            if (itemFound.items) {
-                if (itemFound.main.length === 0 && itemFound.items?.length !== 0) {
-                    itemFound.main = itemFound.items[0].main;
-                    // itemFound.direction = itemFound.items[0].direction;
-                    itemFound.items = itemFound.items[0].items;
-                }
-            }
+            const itemFound = findItemPanel(newParentItems, itemClicked);
+            deleteItemPanel(itemFound, itemClicked);
             return { ...newParentItems };
         })
     };
@@ -100,12 +108,9 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
                     }} onClick={() => {
                         handleItemClick(item);
                     }}>
-                        <DragItem
-                            name={item.name}
-                            currentPositionName={item.position}
+                        <PanelDragItem
+                            item={item}
                             setItems={setItems}
-                            index={index}
-                            component={item.component}
                         />
                         <Box sx={{
                             cursor: "pointer",
@@ -142,7 +147,7 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
                             height: "26px",
                             width: "100%",
                         }}>
-                            <DropAreaGrid position={`${className}-mainComponents`}></DropAreaGrid>
+                            <DropAreaGrid position={`${className}-main`}></DropAreaGrid>
                         </Box>
                         <Box sx={{
                             width: "100%",
@@ -155,7 +160,7 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
                                 width: screenWidth / 2,
                                 height: (screenHeight / 4) - 26
                             }}>
-                                <DropAreaGrid position={`${className}-topComponents`}></DropAreaGrid>
+                                <DropAreaGrid position={`${className}-vertical-before`}></DropAreaGrid>
                             </Box>
                             <Box sx={{
                                 display: "flex",
@@ -166,20 +171,20 @@ const PanelItem = ({ items, setItems, className }: { items: any, setItems: any, 
                                     height: screenHeight / 2,
                                     width: screenWidth / 4
                                 }}>
-                                    <DropAreaGrid position={`${className}-leftComponents`}></DropAreaGrid>
+                                    <DropAreaGrid position={`${className}-before`}></DropAreaGrid>
                                 </Box>
                                 <Box sx={{
                                     height: screenHeight / 2,
                                     width: screenWidth / 4
                                 }}>
-                                    <DropAreaGrid position={`${className}-rightComponents`}></DropAreaGrid>
+                                    <DropAreaGrid position={`${className}`}></DropAreaGrid>
                                 </Box>
                             </Box>
                             <Box sx={{
                                 width: screenWidth / 2,
                                 height: (screenHeight / 4)
                             }}>
-                                <DropAreaGrid position={`${className}-bottomComponents`}></DropAreaGrid>
+                                <DropAreaGrid position={`${className}-vertical`}></DropAreaGrid>
                             </Box>
                         </Box>
                     </Box>

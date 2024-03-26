@@ -1,26 +1,44 @@
 import { itemTypes } from "@/itemTypes/itemTypes";
+import { IPanelItem } from "@/pages/page2";
 import { changeDragging } from "@/redux/features/dndSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { deleteItem, findItem, insertItem, itemsCleanup } from "@/utils/gridItems";
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
+import { deleteItemPanel, findItemPanel } from "./PanelItem";
 
-const DragItem = ({
-    name,
+const PanelDragItem = ({
+    item,
     setItems
 }: any) => {
-    const changeItemPosition = (item: any, position: any) => {
-        setItems((items: any) => {
-            const positionChain = position.split("-");
-            positionChain.shift()
+    const changeItemPosition = (changeItem: any, position: any) => {
+        setItems((parentItems: IPanelItem) => {
+            const newParentItems = { ...parentItems };
+            const itemFound = findItemPanel(newParentItems, changeItem);
 
-            const itemToMove = findItem(item.name, items);
-            const newItems = deleteItem(item.name, items);
-            insertItem(itemToMove, positionChain, newItems);
-            itemsCleanup(newItems);
+            if (itemFound.items) {
+                itemFound.items = [
+                    ...itemFound.items,
+                    {
+                        main: [changeItem],
+                        direction: "horizontal"
+                    }
+                ]
+            } else {
+                itemFound.items =
+                    [
+                        {
+                            main: [changeItem],
+                            direction: "horizontal"
+                        }
+                    ]
+            }
 
-            return { ...newItems };
+
+            deleteItemPanel(itemFound, changeItem);
+
+
+            return { ...newParentItems }
         })
     }
 
@@ -32,7 +50,7 @@ const DragItem = ({
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: itemTypes.COMPONENT,
-        item: { name, type: itemTypes.COMPONENT },
+        item,
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -59,9 +77,9 @@ const DragItem = ({
 
     return (
         <Box ref={ref} sx={{ opacity }}>
-            {name}
+            {item.name}
         </Box>
     )
 };
 
-export default DragItem;
+export default PanelDragItem;
