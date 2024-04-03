@@ -115,16 +115,6 @@ const GridWrapper = () => {
 
     const renderGridItems2 = (gridItems: any) => {
         const res = findMainComponents(gridItems);
-        const beforeRes: any = [];
-        const afterRes: any = [];
-        res.forEach((item: any) => {
-            if (item.position === "before") {
-                beforeRes.push(item)
-            } else {
-                afterRes.push(item)
-            }
-        })
-
         let newres: any = []
         for (let i = 0; i < res.length; i++) {
             if (res[i].tag !== "pushed") {
