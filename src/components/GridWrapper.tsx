@@ -231,6 +231,20 @@ const GridWrapper = () => {
         }
         console.log(res, "old res");
         console.log(newres, "new res");
+        
+        for (let i = 0; i < newres.length; i++) {
+            if (newres[i].neighbors?.length > 0) {
+                console.log("neighbor found");
+                if (newres[i].neighbors[0].direction === "horizontal") {
+                    if (newres[i].neighbors[0].position.includes("before")) {
+                        newres.splice(i, 0, newres[i].neighbors[0])
+                    } else {
+                        newres.splice(i + 1, 0, newres[i].neighbors[0])
+                    }
+                    newres[i].neighbors = [];
+                }
+            }
+        }
 
 
         return (
