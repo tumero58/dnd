@@ -94,11 +94,65 @@ const GridWrapper = () => {
             }
         }
 
+        // console.log(res, "res");
+        // let newres: any = []
+        // for (let i = 0; i < res.length; i++) {
+        //     if (res[i].tag !== "pushed") {
+        //         if (i === 0) {
+        //             if (res[i].direction === "horizontal") {
+        //                 newres.push(res[i]);
+        //             } else {
+        //                 let newitem = {
+        //                     ...res[i]
+        //                 }
+        //                 let neighbors: any = [];
+        //                 for (let j = i + 1; j < res.length; j++) {
+        //                     if (res[j].direction === newitem.direction) {
+        //                         neighbors.push(res[j]);
+        //                         res[j].tag = "pushed";
+        //                         res[j].direction = res[j].direction === "horizontal" ? "vertical" : "horizontal";
+        //                     } else {
+        //                         break
+        //                     }
+        //                 }
+        //                 newitem.neighbors = neighbors;
+        //                 newitem.direction = "horizontal";
+        //                 newres.push(newitem);
+        //             }
+        //         }
+        //         if (i >= 1) {
+        //             if (res[i].direction === res[i - 1].direction) {
+        //                 newres.push(res[i]);
+        //             } else {
+        //                 let newitem: any = {
+        //                     ...res[i]
+        //                 }
+        //                 let neighbors: any = [];
+        //                 for (let j = i + 1; j < res.length; j++) {
+        //                     if (res[j].direction === newitem.direction) {
+        //                         neighbors.push(res[j]);
+        //                         res[j].tag = "pushed";
+        //                         res[j].direction = res[j].direction === "horizontal" ? "vertical" : "horizontal";
+        //                     } else {
+        //                         break
+        //                     }
+        //                 }
+        //                 newitem.neighbors = neighbors;
+        //                 newitem.direction = "horizontal";
+        //                 newres.push(newitem);
+        //             }
+        //         }
+        //     }
+        // }
+        // console.log(res, "old res");
+        // console.log(newres, "new res");
+
+
+
         return (
-            <Panel minSize={20}>
-                {dirSame && renderRes.length > 1 && renderRes.length < itemsAmount ?
-                    renderGridItems2(gridItems, direction, parentClassName) :
-                    <PanelGroup direction={directionColumn ? "vertical" : "horizontal"}>
+            <Panel minSize={10}>
+                {renderGridItems2(gridItems, direction, parentClassName)}
+                {/* <PanelGroup direction={directionColumn ? "vertical" : "horizontal"}>
                         {beforeMainItems ?
                             renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
                         }
@@ -109,8 +163,7 @@ const GridWrapper = () => {
                         {afterMainItems ?
                             renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`) : <></>
                         }
-                    </PanelGroup>
-                }
+                    </PanelGroup> */}
             </Panel>
         )
     }
@@ -127,22 +180,91 @@ const GridWrapper = () => {
             }
         })
 
-        const renderRes = [...beforeRes, ...afterRes];
+        let newres: any = []
+        for (let i = 0; i < res.length; i++) {
+            if (res[i].tag !== "pushed") {
+                if (i === 0) {
+                    if (res[i].direction === "horizontal") {
+                        newres.push(res[i]);
+                    } else {
+                        let newitem = {
+                            ...res[i]
+                        }
+                        let neighbors: any = [];
+                        for (let j = i + 1; j < res.length; j++) {
+                            if (res[j].direction === newitem.direction) {
+                                neighbors.push(res[j]);
+                                res[j].tag = "pushed";
+                                // res[j].direction = res[j].direction === "horizontal" ? "vertical" : "horizontal";
+                            } else {
+                                break
+                            }
+                        }
+                        newitem.neighbors = neighbors;
+                        newitem.direction = "horizontal";
+                        newres.push(newitem);
+                    }
+                }
+                if (i >= 1) {
+                    if (res[i].direction === res[i - 1].direction) {
+                        newres.push(res[i]);
+                    } else {
+                        let newitem: any = {
+                            ...res[i]
+                        }
+                        let neighbors: any = [];
+                        for (let j = i + 1; j < res.length; j++) {
+                            if (res[j].direction === newitem.direction) {
+                                neighbors.push(res[j]);
+                                res[j].tag = "pushed";
+                                // res[j].direction = res[j].direction === "horizontal" ? "vertical" : "horizontal";
+                            } else {
+                                break
+                            }
+                        }
+                        newitem.neighbors = neighbors;
+                        newitem.direction = "horizontal";
+                        newres.push(newitem);
+                    }
+                }
+            }
+        }
+        console.log(res, "old res");
+        console.log(newres, "new res");
+
+
         return (
-            <PanelGroup direction={renderRes[0].direction}>
-                {renderRes?.map((item: any, index: any) => {
+            <PanelGroup direction={newres[0].direction}>
+                {newres?.map((item: any, index: any) => {
                     return (
                         <Fragment key={index + 1}>
-                            <Panel minSize={20}>
-                                <GridItem className={item.className} items={item.renderItem} setItems={setGridItems} />
+                            <Panel minSize={10}>
+                                {item.neighbors?.length > 0 ?
+                                    <PanelGroup direction={item.neighbors[0].direction}>
+                                        {[item, ...item.neighbors].map((childItem: any, index: number) => {
+                                            return (
+                                                <Fragment key={index + 1}>
+                                                    <Panel minSize={10}>
+                                                        <GridItem className={childItem.className} items={childItem.renderItem} setItems={setGridItems} />
+                                                    </Panel>
+                                                    {index + 1 !== [item, ...item.neighbors].length ? <PanelResizeHandle /> : <></>}
+                                                </Fragment>
+                                            )
+                                        })}
+                                    </PanelGroup>
+                                    :
+                                    <GridItem className={item.className} items={item.renderItem} setItems={setGridItems} />}
                             </Panel>
-                            {index + 1 !== renderRes.length ? <PanelResizeHandle /> : <></>}
+                            {index + 1 !== newres.length ? <PanelResizeHandle /> : <></>}
                         </Fragment>
                     )
                 })}
             </PanelGroup>
         )
     }
+
+    console.log(gridItems, "griditems");
+
 
 
     return (
