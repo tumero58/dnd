@@ -33,85 +33,56 @@ const GridWrapper = () => {
         ]
     })
 
-    // const renderGridItems = (gridItems: any, parentClassName: string = ""): any => {
-    //     if (Object.keys(gridItems).length === 0) {
-    //         return;
-    //     }
+    const renderGridItems = (gridItems: any, parentClassName: string = ""): any => {
+        if (Object.keys(gridItems).length === 0) {
+            return;
+        }
+        let directionColumn;
 
+        let beforeMainItems;
+        let afterMainItems;
 
-    // console.log(res, "res");
-    // let newres: any = []
-    // for (let i = 0; i < res.length; i++) {
-    //     if (res[i].tag !== "pushed") {
-    //         if (i === 0) {
-    //             if (res[i].direction === "horizontal") {
-    //                 newres.push(res[i]);
-    //             } else {
-    //                 let newitem = {
-    //                     ...res[i]
-    //                 }
-    //                 let neighbors: any = [];
-    //                 for (let j = i + 1; j < res.length; j++) {
-    //                     if (res[j].direction === newitem.direction) {
-    //                         neighbors.push(res[j]);
-    //                         res[j].tag = "pushed";
-    //                         res[j].direction = res[j].direction === "horizontal" ? "vertical" : "horizontal";
-    //                     } else {
-    //                         break
-    //                     }
-    //                 }
-    //                 newitem.neighbors = neighbors;
-    //                 newitem.direction = "horizontal";
-    //                 newres.push(newitem);
-    //             }
-    //         }
-    //         if (i >= 1) {
-    //             if (res[i].direction === res[i - 1].direction) {
-    //                 newres.push(res[i]);
-    //             } else {
-    //                 let newitem: any = {
-    //                     ...res[i]
-    //                 }
-    //                 let neighbors: any = [];
-    //                 for (let j = i + 1; j < res.length; j++) {
-    //                     if (res[j].direction === newitem.direction) {
-    //                         neighbors.push(res[j]);
-    //                         res[j].tag = "pushed";
-    //                         res[j].direction = res[j].direction === "horizontal" ? "vertical" : "horizontal";
-    //                     } else {
-    //                         break
-    //                     }
-    //                 }
-    //                 newitem.neighbors = neighbors;
-    //                 newitem.direction = "horizontal";
-    //                 newres.push(newitem);
-    //             }
-    //         }
-    //     }
-    // }
-    // console.log(res, "old res");
-    // console.log(newres, "new res");
+        let beforeClassName;
+        let afterClassName;
 
+        if (gridItems.leftComponents && Object.keys(gridItems.leftComponents).length !== 0) {
+            beforeMainItems = gridItems.leftComponents;
+            beforeClassName = "leftComponents";
+            directionColumn = false;
+        }
+        if (gridItems.topComponents && Object.keys(gridItems.topComponents).length !== 0) {
+            beforeMainItems = gridItems.topComponents
+            beforeClassName = "topComponents";
+            directionColumn = true;
+        }
+        if (gridItems.rightComponents && Object.keys(gridItems.rightComponents).length !== 0) {
+            afterMainItems = gridItems.rightComponents;
+            afterClassName = "rightComponents";
+            directionColumn = false;
+        }
+        if (gridItems.bottomComponents && Object.keys(gridItems.bottomComponents).length !== 0) {
+            afterMainItems = gridItems.bottomComponents;
+            afterClassName = "bottomComponents";
+            directionColumn = true;
+        }
 
-
-    // return (
-    // <Panel minSize={10}>
-    // renderGridItems2(gridItems)
-    /* <PanelGroup direction={directionColumn ? "vertical" : "horizontal"}>
-            {beforeMainItems ?
-                renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
-            }
-            {gridItems.mainComponents?.length !== 0 ?
-                <GridItem className={parentClassName} items={gridItems.mainComponents} setItems={setGridItems} />
-                : <></>}
-            {afterMainItems ? <PanelResizeHandle /> : <></>}
-            {afterMainItems ?
-                renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`) : <></>
-            }
-        </PanelGroup> */
-    // </Panel>
-    //     )
-    // }
+        return (
+            <Panel minSize={10}>
+                <PanelGroup direction={directionColumn ? "vertical" : "horizontal"}>
+                        {beforeMainItems ?
+                            renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`) : <></>
+                        }
+                        {gridItems.mainComponents?.length !== 0 ?
+                            <GridItem className={parentClassName} items={gridItems.mainComponents} setItems={setGridItems} />
+                            : <></>}
+                        {afterMainItems ? <PanelResizeHandle /> : <></>}
+                        {afterMainItems ?
+                            renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`) : <></>
+                        }
+                    </PanelGroup>
+            </Panel>
+        )
+    }
 
     const renderGridItems2 = (gridItems: any) => {
         const res = findMainComponents(gridItems);
