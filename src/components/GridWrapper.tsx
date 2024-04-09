@@ -1,39 +1,20 @@
 import { gridItemsDefault } from "@/utils/gridItems";
 import { Box } from "@mui/material";
-import { useState } from "react";
-import { Panel, PanelGroup } from "react-resizable-panels";
+import { Fragment, useState } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import GridItem from "./GridItem";
 
 const GridWrapper = () => {
-    const findMainComponents = (gridItems: any, items: any = [], direction: string = "horizontal", position: string = "", className: string = "") => {
-        const keys = Object.keys(gridItems);
-        for (let i = 0; i < keys.length; i++) {
-            if (keys[i].includes("main") && gridItems[keys[i]].length !== 0) {
-                items.push(
-                    {
-                        renderItem: gridItems[keys[i]],
-                        direction,
-                        className,
-                        position
-                    }
-                )
-            } else {
-                const dir = keys[i].includes("top") || keys[i].includes("bottom") ? "vertical" : "horizontal";
-                const position = keys[i].includes("top") || keys[i].includes("left") ? "before" : "";
-                findMainComponents(gridItems[keys[i]], items, dir, position, `${className}-${keys[i]}`)
-            }
-        }
-        return items;
-    }
-
-
     const [gridItems, setGridItems] = useState({
         mainComponents: [
             ...gridItemsDefault
         ]
     })
 
-    const renderGridItems = (gridItems: any, parentClassName: string = "", prevDirection?: string): any => {
+    const f1 = (gridItems: any, parentClassName: string = "", prevDirection?: string): any => {
+        if (!gridItems) {
+            return
+        }
         if (Object.keys(gridItems).length === 0) {
             return;
         }
@@ -68,47 +49,62 @@ const GridWrapper = () => {
 
         const direction = directionColumn ? "vertical" : "horizontal";
 
-        return (
-            <>
-                {prevDirection === direction ?
-                    <>
-                        {beforeMainItems ?
-                            renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`, direction) : <></>
-                        }
-                        {gridItems.mainComponents?.length !== 0 ?
-                            <>
-                                {/* <p>panel 1</p> */}
-                                <Panel minSize={10}>
-                                    <GridItem className={parentClassName} items={gridItems.mainComponents} setItems={setGridItems} />
-                                </Panel>
-                            </>
 
-                            : <></>}
-                        {afterMainItems ?
-                            renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`, direction) : <></>
-                        }
-                    </> :
-                    <>
-                        {/* <p>panel 2</p> */}
-                        <Panel minSize={10}>
-                            <PanelGroup direction={direction}>
-                                {beforeMainItems ?
-                                    renderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`, direction) : <></>
-                                }
-                                {gridItems.mainComponents?.length !== 0 ?
-                                    renderGridItems(gridItems, parentClassName, direction)
-                                    : <></>}
-                                {afterMainItems ?
-                                    renderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`, direction) : <></>
-                                }
-                            </PanelGroup>
-                        </Panel>
-                    </>}
-            </>
-        )
+        let arr: any = [];
+
+        const beforeItems = f1(beforeMainItems, `${parentClassName}-${beforeClassName}`, direction);
+        const afterItems = f1(afterMainItems, `${parentClassName}-${afterClassName}`, direction);
+
+        if (prevDirection === direction) {
+            if (beforeItems) {
+                if (beforeItems.direction) {
+                    arr.push(beforeItems)
+                } else {
+                    arr.push(...beforeItems);
+                }
+            }
+            arr.push({
+                parentClassName,
+                items: gridItems.mainComponents
+            });
+            if (afterItems) {
+                if (afterItems.direction) {
+                    arr.push(afterItems)
+                } else {
+                    arr.push(...afterItems);
+                }
+            }
+            const filteredArr = arr.filter((item: any) => item.items?.length !== 0);
+            return filteredArr;
+        } else {
+            return {
+                direction,
+                arr: f1(gridItems, parentClassName, direction)
+            };
+        }
     }
 
-    const res = findMainComponents(gridItems);
+    const f1res = f1(gridItems);
+
+    const renderPanel = (res: any) => {
+        return (
+            <PanelGroup direction={res.direction}>
+                {res.arr.map((item: any, index: number) => {
+                    return (
+                        <Fragment key={index + 1}>
+                            <Panel minSize={10}>
+                                {item.direction ?
+                                    renderPanel(item) :
+                                    <GridItem className={item.parentClassName} items={item.items} setItems={setGridItems} />
+                                }
+                            </Panel>
+                            {index + 1 !== res.arr.length ? <PanelResizeHandle /> : <></>}
+                        </Fragment>
+                    )
+                })}
+            </PanelGroup>
+        )
+    }
 
     return (
         <>
@@ -122,9 +118,7 @@ const GridWrapper = () => {
                     border: "1px solid grey",
                     borderRadius: "4px",
                 }}>
-                    <PanelGroup direction={res[0].direction}>
-                        {renderGridItems(gridItems)}
-                    </PanelGroup>
+                    {renderPanel(f1res)}
                 </Box>
             </Box>
         </>
