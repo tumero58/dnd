@@ -115,42 +115,75 @@ export const itemsCleanup = (items: any) => {
     }
 }
 
+export const orderGridItems = (gridItems: any, parentClassName: string = "", prevDirection?: string): any => {
+    if (!gridItems) {
+        return
+    }
+    if (Object.keys(gridItems).length === 0) {
+        return;
+    }
+    let directionColumn;
+
+    let beforeMainItems;
+    let afterMainItems;
+
+    let beforeClassName;
+    let afterClassName;
+
+    if (gridItems.leftComponents && Object.keys(gridItems.leftComponents).length !== 0) {
+        beforeMainItems = gridItems.leftComponents;
+        beforeClassName = "leftComponents";
+        directionColumn = false;
+    }
+    if (gridItems.topComponents && Object.keys(gridItems.topComponents).length !== 0) {
+        beforeMainItems = gridItems.topComponents
+        beforeClassName = "topComponents";
+        directionColumn = true;
+    }
+    if (gridItems.rightComponents && Object.keys(gridItems.rightComponents).length !== 0) {
+        afterMainItems = gridItems.rightComponents;
+        afterClassName = "rightComponents";
+        directionColumn = false;
+    }
+    if (gridItems.bottomComponents && Object.keys(gridItems.bottomComponents).length !== 0) {
+        afterMainItems = gridItems.bottomComponents;
+        afterClassName = "bottomComponents";
+        directionColumn = true;
+    }
+
+    const direction = directionColumn ? "vertical" : "horizontal";
 
 
-// const [gridItems, setGridItems] = useState({
-//     mainComponents: [
-//         { id: 1, name: "Comp1", component: <Comp1 /> },
-//         { id: 2, name: "Comp2", component: <Comp2 /> },
-//         { id: 3, name: "Comp3", component: <Comp3 /> },
-//         { id: 4, name: "Comp4", component: <Comp4 /> },
-//     ],
-//     neighbors: {
-//         direction: "vertical",
-//         mainComponents: [
-//             { id: 1, name: "Comp1", component: <Comp1 /> },
-//             { id: 2, name: "Comp2", component: <Comp2 /> },
-//         ]
-//     }
-// })
+    let arr: any = [];
 
-// const direction = gridItems.neighbors.direction || "horizontal";
-//         const itemsToRender = [];
-//         itemsToRender.push(gridItems.mainComponents);
-//         if (gridItems?.neighbors?.mainComponents?.length > 0) {
-//             gridItems.neighbors.mainComponents.forEach((item: any) => {
-//                 itemsToRender.push([item])
-//             })
-//         }
+    const beforeItems = orderGridItems(beforeMainItems, `${parentClassName}-${beforeClassName}`, direction);
+    const afterItems = orderGridItems(afterMainItems, `${parentClassName}-${afterClassName}`, direction);
 
-//         <PanelGroup direction={direction}>
-//                 {itemsToRender?.map((item: any, index: number) => {
-//                     return (
-//                         <Fragment key={index + 1}>
-//                             <Panel minSize={20}>
-//                                 <GridItem className={""} items={item} setItems={()=>{}} />
-//                             </Panel>
-//                             {index + 1 !== itemsToRender.length ? <PanelResizeHandle /> : <></>}
-//                         </Fragment>
-//                     )
-//                 })}
-//             </PanelGroup>
+    if (prevDirection === direction) {
+        if (beforeItems) {
+            if (beforeItems.direction) {
+                arr.push(beforeItems)
+            } else {
+                arr.push(...beforeItems);
+            }
+        }
+        arr.push({
+            parentClassName,
+            items: gridItems.mainComponents
+        });
+        if (afterItems) {
+            if (afterItems.direction) {
+                arr.push(afterItems)
+            } else {
+                arr.push(...afterItems);
+            }
+        }
+        const filteredArr = arr.filter((item: any) => item.items?.length !== 0);
+        return filteredArr;
+    } else {
+        return {
+            direction,
+            arr: orderGridItems(gridItems, parentClassName, direction)
+        };
+    }
+}
