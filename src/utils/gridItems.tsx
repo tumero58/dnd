@@ -183,7 +183,8 @@ export const orderGridItems = (gridItems: any, parentClassName: string = "", pre
     } else {
         return {
             direction,
-            arr: orderGridItems(gridItems, parentClassName, direction)
+            arr: orderGridItems(gridItems, parentClassName, direction),
+            parentClassName
         };
     }
 }
