@@ -1,6 +1,6 @@
 import { gridItemsDefault, orderGridItems } from "@/utils/gridItems";
 import { Box } from "@mui/material";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import GridItem from "./GridItem";
 
@@ -10,6 +10,37 @@ const GridWrapper = () => {
             ...gridItemsDefault
         ]
     })
+
+    const getComponents = (parsed: any) => {
+        if (parsed.mainComponents?.length > 0) {
+            parsed.mainComponents = parsed.mainComponents.map((item: any) => {
+                if (item.name) {
+                    item.component = gridItemsDefault.find((i => i.name === item.name))?.component
+                }
+                return item
+            })
+        } else {
+            const keys = Object.keys(parsed);
+            keys.forEach((item: any) => {
+                return getComponents(parsed[item])
+            })
+        }
+        return parsed
+    }
+
+    useEffect(() => {
+        const cachedItems = localStorage.getItem("items");
+        const parsed = JSON.parse(cachedItems || "");
+        setGridItems(getComponents(parsed))
+
+
+    }, [])
+
+    useEffect(() => {
+        console.log(gridItems, "gridit");
+
+        localStorage.setItem("items", JSON.stringify(gridItems))
+    }, [gridItems])
 
     const renderPanel = (res: any) => {
         return (
@@ -32,6 +63,7 @@ const GridWrapper = () => {
     }
 
     const orderedGridItems = orderGridItems(gridItems);
+
 
     return (
         <>
