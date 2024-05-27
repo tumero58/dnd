@@ -157,7 +157,7 @@ const GridWrapper = () => {
                                     }}>{item}</Button>
                                 )
                             }) : <></>}
-                        {openNewLayout ?
+                        {openNewLayout || layouts?.length === 0 ?
                             <Box sx={{
                                 display: "flex",
                                 alignItems: "center"
