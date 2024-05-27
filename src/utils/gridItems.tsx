@@ -2,8 +2,9 @@ import Comp1 from "@/components/Comp1";
 import Comp2 from "@/components/Comp2";
 import Comp3 from "@/components/Comp3";
 import Comp4 from "@/components/Comp4";
-import { Box } from "@mui/material";
-import { ReactElement } from "react";
+import GridItem from "@/components/GridItem";
+import { Fragment, ReactElement } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 export interface IGridItem {
     id: number;
@@ -187,4 +188,32 @@ export const orderGridItems = (gridItems: any, parentClassName: string = "", pre
             parentClassName
         };
     }
+}
+
+export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: Function) => {
+    return (
+        <PanelGroup direction={res.direction} onLayout={(numbers) => {
+            setSizes({
+                ...sizes,
+                [res.parentClassName || "main"]: numbers
+            })
+        }}>
+            {res.arr.map((item: any, index: number) => {
+                return (
+                    <Fragment key={index + 1}>
+                        <Panel
+                            minSize={10}
+                            defaultSize={sizes?.[res.parentClassName || "main"]?.[index] || 100}
+                        >
+                            {item.direction ?
+                                renderPanel(item, sizes, setSizes, setGridItems) :
+                                <GridItem className={item.parentClassName} items={item.items} setItems={setGridItems} />
+                            }
+                        </Panel>
+                        {index + 1 !== res.arr.length ? <PanelResizeHandle /> : <></>}
+                    </Fragment>
+                )
+            })}
+        </PanelGroup>
+    )
 }
