@@ -33,6 +33,8 @@ const GridWrapper = () => {
     const [layoutName, setLayoutName] = useState("");
     const [layouts, setLayouts] = useState([]);
     const [activeLayout, setActiveLayout] = useState("");
+    const orderedGridItems = orderGridItems(gridItems);
+    const [openNewLayout, setOpenNewLayout] = useState(false);
 
     useEffect(() => {
         if (activeLayout) {
@@ -124,8 +126,7 @@ const GridWrapper = () => {
         )
     }
 
-    const orderedGridItems = orderGridItems(gridItems);
-    const [openNewLayout, setOpenNewLayout] = useState(false);
+
 
     useEffect(() => {
         const layoutsLocal = localStorage.getItem("layoutsList");
@@ -151,6 +152,8 @@ const GridWrapper = () => {
                                 return (
                                     <Button key={index + 1} onClick={() => {
                                         loadLayout(item)
+                                    }} sx={{
+                                        fontWeight: activeLayout === item ? "bold" : "unset"
                                     }}>{item}</Button>
                                 )
                             }) : <></>}
@@ -163,7 +166,17 @@ const GridWrapper = () => {
                                 <Button onClick={() => { saveLayout(layoutName) }}>save layout</Button>
                                 <Button onClick={() => { setOpenNewLayout(false) }}>X</Button>
                             </Box> :
-                            <Button onClick={() => { setOpenNewLayout(true) }}>+</Button>}
+                            <Button onClick={() => {
+                                setGridItems({
+                                    mainComponents: [
+                                        ...gridItemsDefault
+                                    ]
+                                });
+                                setSizes([]);
+                                setActiveLayout("");
+                                setLayoutName("");
+                                setOpenNewLayout(true)
+                            }}>+</Button>}
                     </Box>
                     <Box sx={{
                         display: "flex",
