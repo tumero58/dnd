@@ -1,7 +1,7 @@
 import useLayout from "@/hooks/useLayout";
-import { gridItemsDefault, renderPanel } from "@/utils/gridItems";
+import { findItem, gridItemsDefault, IGridItem, insertItem, itemsCleanup, renderPanel } from "@/utils/gridItems";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styles } from "./GridWrapper.styles";
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -24,6 +24,37 @@ const GridWrapper = () => {
         x: 0,
         y: 0,
     });
+    const [duplicateProps, setDuplicateProps] = useState({
+        main: "",
+        top: "",
+        left: "",
+        right: "",
+        bottom: ""
+    });
+    const [duplicateItem, setDuplicateItem] = useState<any>({});
+
+    useEffect(() => {
+        const handleClick = () => {
+            setClicked(false);
+            setDuplicateItem({});
+            setDuplicateProps({
+                main: "",
+                top: "",
+                left: "",
+                right: "",
+                bottom: ""
+            })
+            setPoints({
+                x: 0,
+                y: 0,
+            })
+        };
+        window.addEventListener("click", handleClick);
+        return () => {
+            window.removeEventListener("click", handleClick);
+        };
+    }, []);
+
 
     const handleCreateNewLayout = () => {
         setGridItems({
@@ -67,6 +98,26 @@ const GridWrapper = () => {
         localStorage.setItem("layoutsList", JSON.stringify(newLayouts));
     }
 
+    const handleDuplicateItem = (position: "main" | "top" | "left" | "right" | "bottom") => {
+        setGridItems((items: any) => {
+            const positionChain = duplicateProps[position].split("-");
+            positionChain.shift();
+            const newItemProps = `${duplicateItem.name}(c)`;
+            const foundItem = findItem(newItemProps, items);
+            const newItem = {
+                ...duplicateItem,
+                name: foundItem?.name ? `${newItemProps}(c)` : newItemProps,
+                id: foundItem?.name ? `${newItemProps}(c)` : newItemProps
+            }
+            const newItems = { ...items };
+            insertItem(newItem, positionChain, newItems);
+            itemsCleanup(newItems);
+
+            return { ...newItems };
+        })
+
+    }
+
     if (renderReady) {
         return (
             <>
@@ -104,7 +155,7 @@ const GridWrapper = () => {
                         <Typography>{activeLayout}</Typography>
                     </Box>
                     <Box sx={styles.panelWrapper}>
-                        {renderPanel(orderedGridItems, sizes, setSizes, setGridItems, setClicked, setPoints)}
+                        {renderPanel(orderedGridItems, sizes, setSizes, setGridItems, setClicked, setPoints, setDuplicateProps, setDuplicateItem)}
                         {clicked && (
                             <Box sx={{
                                 position: "absolute",
@@ -116,11 +167,21 @@ const GridWrapper = () => {
                                 flexDirection: "column",
                                 background: "white"
                             }}>
-                                <Button>{"duplicate ○"}</Button>
-                                <Button>{"duplicate ↑"}</Button>
-                                <Button>{"duplicate ←"}</Button>
-                                <Button>{"duplicate ↓"}</Button>
-                                <Button>{"duplicate →"}</Button>
+                                <Button onClick={() => {
+                                    handleDuplicateItem("main");
+                                }}>{"duplicate ○"}</Button>
+                                <Button onClick={() => {
+                                    handleDuplicateItem("top");
+                                }}>{"duplicate ↑"}</Button>
+                                <Button onClick={() => {
+                                    handleDuplicateItem("left");
+                                }}>{"duplicate ←"}</Button>
+                                <Button onClick={() => {
+                                    handleDuplicateItem("bottom");
+                                }}>{"duplicate ↓"}</Button>
+                                <Button onClick={() => {
+                                    handleDuplicateItem("right");
+                                }}>{"duplicate →"}</Button>
                             </Box>
                         )}
                     </Box>

@@ -7,7 +7,7 @@ import { Fragment, ReactElement } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 export interface IGridItem {
-    id: number;
+    id: number | string;
     name: string;
     component: ReactElement;
 }
@@ -190,7 +190,8 @@ export const orderGridItems = (gridItems: any, parentClassName: string = "", pre
     }
 }
 
-export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: Function, setClicked: Function, setPoints: Function) => {
+export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: Function,
+    setClicked: Function, setPoints: Function, setDuplicateProps: Function, setDuplicateItem: Function) => {
     return (
         <PanelGroup direction={res.direction} onLayout={(numbers) => {
             setSizes({
@@ -206,13 +207,15 @@ export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: F
                             defaultSize={sizes?.[res.parentClassName || "main"]?.[index] || 100}
                         >
                             {item.direction ?
-                                renderPanel(item, sizes, setSizes, setGridItems, setClicked, setPoints) :
+                                renderPanel(item, sizes, setSizes, setGridItems, setClicked, setPoints, setDuplicateProps, setDuplicateItem) :
                                 <GridItem
                                     className={item.parentClassName}
                                     items={item.items}
                                     setItems={setGridItems}
                                     setClicked={setClicked}
                                     setPoints={setPoints}
+                                    setDuplicateProps={setDuplicateProps}
+                                    setDuplicateItem={setDuplicateItem}
                                 />
                             }
                         </Panel>

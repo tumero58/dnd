@@ -6,7 +6,25 @@ import { getDndDragging } from "@/redux/features/dndSlice";
 import DropAreaGrid from "./DropAreaGrid";
 import { deleteItem, itemsCleanup } from "@/utils/gridItems";
 
-const GridItem = ({ items, setItems, className, setClicked, setPoints }: { items: any, setItems: any, className: any, setClicked: any, setPoints: any }) => {
+const GridItem = (
+    {
+        items,
+        setItems,
+        className,
+        setClicked,
+        setPoints,
+        setDuplicateProps,
+        setDuplicateItem
+    }:
+        {
+            items: any,
+            setItems: any,
+            className: any,
+            setClicked: any,
+            setPoints: any,
+            setDuplicateProps: any,
+            setDuplicateItem: any
+        }) => {
     const isDragging = useSelector(getDndDragging);
 
     const [activeItem, setActiveItem] = useState<any>(items?.[0] || {});
@@ -22,14 +40,6 @@ const GridItem = ({ items, setItems, className, setClicked, setPoints }: { items
             return { ...newItems };
         })
     };
-
-    useEffect(() => {
-        const handleClick = () => setClicked(false);
-        window.addEventListener("click", handleClick);
-        return () => {
-            window.removeEventListener("click", handleClick);
-        };
-    }, [setClicked]);
 
     useEffect(() => {
         if (items.length !== 0) {
@@ -88,6 +98,14 @@ const GridItem = ({ items, setItems, className, setClicked, setPoints }: { items
                                 x: e.pageX,
                                 y: e.pageY,
                             });
+                            setDuplicateProps({
+                                main: `${className}-mainComponents`,
+                                top: `${className}-topComponents`,
+                                left: `${className}-leftComponents`,
+                                right: `${className}-rightComponents`,
+                                bottom: `${className}-bottomComponents`
+                            })
+                            setDuplicateItem(item);
                             console.log(e, "right click");
 
                         }} onClick={() => {
