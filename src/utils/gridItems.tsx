@@ -190,7 +190,7 @@ export const orderGridItems = (gridItems: any, parentClassName: string = "", pre
     }
 }
 
-export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: Function) => {
+export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: Function, setClicked: Function, setPoints: Function) => {
     return (
         <PanelGroup direction={res.direction} onLayout={(numbers) => {
             setSizes({
@@ -206,8 +206,14 @@ export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: F
                             defaultSize={sizes?.[res.parentClassName || "main"]?.[index] || 100}
                         >
                             {item.direction ?
-                                renderPanel(item, sizes, setSizes, setGridItems) :
-                                <GridItem className={item.parentClassName} items={item.items} setItems={setGridItems} />
+                                renderPanel(item, sizes, setSizes, setGridItems, setClicked, setPoints) :
+                                <GridItem
+                                    className={item.parentClassName}
+                                    items={item.items}
+                                    setItems={setGridItems}
+                                    setClicked={setClicked}
+                                    setPoints={setPoints}
+                                />
                             }
                         </Panel>
                         {index + 1 !== res.arr.length ? <PanelResizeHandle /> : <></>}

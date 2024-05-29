@@ -6,7 +6,7 @@ import { getDndDragging } from "@/redux/features/dndSlice";
 import DropAreaGrid from "./DropAreaGrid";
 import { deleteItem, itemsCleanup } from "@/utils/gridItems";
 
-const GridItem = ({ items, setItems, className }: { items: any, setItems: any, className: any }) => {
+const GridItem = ({ items, setItems, className, setClicked, setPoints }: { items: any, setItems: any, className: any, setClicked: any, setPoints: any }) => {
     const isDragging = useSelector(getDndDragging);
 
     const [activeItem, setActiveItem] = useState<any>(items?.[0] || {});
@@ -22,6 +22,14 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
             return { ...newItems };
         })
     };
+
+    useEffect(() => {
+        const handleClick = () => setClicked(false);
+        window.addEventListener("click", handleClick);
+        return () => {
+            window.removeEventListener("click", handleClick);
+        };
+    }, [setClicked]);
 
     useEffect(() => {
         if (items.length !== 0) {
@@ -72,9 +80,19 @@ const GridItem = ({ items, setItems, className }: { items: any, setItems: any, c
                         gap: 1,
                         backgroundColor: item.id === activeItem?.id ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.05)",
                         cursor: "pointer"
-                    }} onClick={() => {
-                        handleItemClick(item);
-                    }}>
+                    }}
+                        onContextMenu={(e) => {
+                            e.preventDefault();
+                            setClicked(true);
+                            setPoints({
+                                x: e.pageX,
+                                y: e.pageY,
+                            });
+                            console.log(e, "right click");
+
+                        }} onClick={() => {
+                            handleItemClick(item);
+                        }}>
                         <DragItem
                             name={item.name}
                             currentPositionName={item.position}

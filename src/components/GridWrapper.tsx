@@ -19,6 +19,12 @@ const GridWrapper = () => {
         setLayouts, setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
     } = useLayout(gridItems, setGridItems);
 
+    const [clicked, setClicked] = useState(false);
+    const [points, setPoints] = useState({
+        x: 0,
+        y: 0,
+    });
+
     const handleCreateNewLayout = () => {
         setGridItems({
             mainComponents: [
@@ -98,7 +104,25 @@ const GridWrapper = () => {
                         <Typography>{activeLayout}</Typography>
                     </Box>
                     <Box sx={styles.panelWrapper}>
-                        {renderPanel(orderedGridItems, sizes, setSizes, setGridItems)}
+                        {renderPanel(orderedGridItems, sizes, setSizes, setGridItems, setClicked, setPoints)}
+                        {clicked && (
+                            <Box sx={{
+                                position: "absolute",
+                                top: points.y,
+                                left: points.x,
+                                border: "1px solid #1976d2",
+                                borderRadius: "16px",
+                                display: "flex",
+                                flexDirection: "column",
+                                background: "white"
+                            }}>
+                                <Button>{"duplicate ○"}</Button>
+                                <Button>{"duplicate ↑"}</Button>
+                                <Button>{"duplicate ←"}</Button>
+                                <Button>{"duplicate ↓"}</Button>
+                                <Button>{"duplicate →"}</Button>
+                            </Box>
+                        )}
                     </Box>
                 </Box>
             </>
