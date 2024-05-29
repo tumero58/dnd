@@ -68,7 +68,7 @@ const useLayout = (gridItems: any, setGridItems: Function) => {
             setGridItems(syncComponents(items));
             setSizes(sizes);
         }
-    }, [syncComponents,setGridItems])
+    }, [syncComponents, setGridItems])
 
     useEffect(() => {
         const activeLayoutLocal = localStorage.getItem("activeLayout");
@@ -102,7 +102,7 @@ const useLayout = (gridItems: any, setGridItems: Function) => {
         renderReady,
         saveLayout, loadLayout,
         layouts, activeLayout, openNewLayout, orderedGridItems, layoutName, sizes,
-        setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
+        setLayouts, setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
     }
 
 };

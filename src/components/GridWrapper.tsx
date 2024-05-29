@@ -3,6 +3,7 @@ import { gridItemsDefault, renderPanel } from "@/utils/gridItems";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { styles } from "./GridWrapper.styles";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const GridWrapper = () => {
     const [gridItems, setGridItems] = useState({
@@ -15,7 +16,7 @@ const GridWrapper = () => {
         renderReady,
         saveLayout, loadLayout,
         layouts, activeLayout, openNewLayout, orderedGridItems, layoutName, sizes,
-        setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
+        setLayouts, setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
     } = useLayout(gridItems, setGridItems);
 
     const handleCreateNewLayout = () => {
@@ -38,6 +39,28 @@ const GridWrapper = () => {
         }
     }
 
+    const handleDeleteLayout = (layoutName: string) => {
+        const newLayouts = layouts.filter((item) => item !== layoutName);
+        if (activeLayout === layoutName) {
+            const lastLayout = newLayouts[newLayouts.length - 1];
+            if (lastLayout) {
+                loadLayout(lastLayout)
+            } else {
+                setActiveLayout("");
+                localStorage.removeItem("activeLayout");
+                setGridItems({
+                    mainComponents: [
+                        ...gridItemsDefault
+                    ]
+                });
+                setSizes([]);
+            }
+        }
+        localStorage.removeItem(layoutName);
+        setLayouts(newLayouts);
+        localStorage.setItem("layoutsList", JSON.stringify(newLayouts));
+    }
+
     if (renderReady) {
         return (
             <>
@@ -46,13 +69,21 @@ const GridWrapper = () => {
                         {layouts?.length > 0 ?
                             layouts.map((item: string, index: number) => {
                                 return (
-                                    <Button
-                                        key={index + 1}
-                                        onClick={() => {
-                                            loadLayout(item)
-                                        }}
-                                        sx={styles.isActive(activeLayout, item)}
-                                    >{item}</Button>
+                                    <Box sx={{
+                                        ...styles.flexAlignCenter,
+                                        ...styles.isActiveBorder(activeLayout, item)
+                                    }} key={index + 1}>
+                                        <Button
+                                            key={index + 1}
+                                            onClick={() => {
+                                                loadLayout(item)
+                                            }}
+                                            sx={styles.isActive(activeLayout, item)}
+                                        >{item}</Button>
+                                        <Button onClick={() => {
+                                            handleDeleteLayout(item)
+                                        }}><DeleteIcon /></Button>
+                                    </Box>
                                 )
                             }) : <></>}
                         {openNewLayout || layouts?.length === 0 ?

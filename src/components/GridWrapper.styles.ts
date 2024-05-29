@@ -21,5 +21,10 @@ export const styles = {
         return {
             fontWeight: activeLayout === item ? "bold" : "unset"
         }
-    }
+    },
+    isActiveBorder: (activeLayout: string, item: string) => {
+        return {
+            border: activeLayout === item ? "1px solid blue" : "unset"
+        }
+    },
 }
