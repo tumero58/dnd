@@ -39,7 +39,10 @@ const GridWrapper = () => {
     const [duplicateItem, setDuplicateItem] = useState<any>({});
 
     useEffect(() => {
-        const handleClick = () => {
+        const handleClick = (e: MouseEvent) => {
+            if ((e.target as any)?.role === "menuitem") {
+                return
+            }
             setClicked(false);
             setDuplicateItem({});
             setDuplicateProps({
@@ -53,16 +56,13 @@ const GridWrapper = () => {
                 x: 0,
                 y: 0,
             })
+            setMiniMenuOpen(false)
         };
         window.addEventListener("click", handleClick);
         return () => {
             window.removeEventListener("click", handleClick);
         };
     }, []);
-
-    const [open, setOpen] = useState(false);
-    const closeModal = () => setOpen(false);
-
 
     const handleCreateNewLayout = () => {
         setGridItems({
@@ -125,6 +125,8 @@ const GridWrapper = () => {
         })
 
     }
+
+    const [miniMenuOpen, setMiniMenuOpen] = useState(false);
 
 
     if (renderReady) {
@@ -195,18 +197,24 @@ const GridWrapper = () => {
                                 <Button onClick={() => {
                                     handleDuplicateItem("main");
                                 }}>{"duplicate ○"}</Button>
-                                <Button onClick={() => {
-                                    handleDuplicateItem("top");
-                                }}>{"duplicate ↑"}</Button>
-                                <Button onClick={() => {
-                                    handleDuplicateItem("left");
-                                }}>{"duplicate ←"}</Button>
-                                <Button onClick={() => {
-                                    handleDuplicateItem("bottom");
-                                }}>{"duplicate ↓"}</Button>
-                                <Button onClick={() => {
-                                    handleDuplicateItem("right");
-                                }}>{"duplicate →"}</Button>
+                                <Button role={"menuitem"} onClick={() => { setMiniMenuOpen((o) => !o) }}>
+                                    duplicate {miniMenuOpen ? "▼" : "►"}
+                                </Button>
+                                {miniMenuOpen ?
+                                    <>
+                                        <Button onClick={() => {
+                                            handleDuplicateItem("top");
+                                        }}>{"duplicate ↑"}</Button>
+                                        <Button onClick={() => {
+                                            handleDuplicateItem("left");
+                                        }}>{"duplicate ←"}</Button>
+                                        <Button onClick={() => {
+                                            handleDuplicateItem("bottom");
+                                        }}>{"duplicate ↓"}</Button>
+                                        <Button onClick={() => {
+                                            handleDuplicateItem("right");
+                                        }}>{"duplicate →"}</Button>
+                                    </> : <></>}
                             </Box>
                         )}
                     </Box>
