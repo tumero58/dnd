@@ -1,11 +1,16 @@
 import useLayout from "@/hooks/useLayout";
 import { findItem, gridItemsDefault, IGridItem, insertItem, itemsCleanup, renderPanel } from "@/utils/gridItems";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styles } from "./GridWrapper.styles";
 import DeleteIcon from '@mui/icons-material/Delete';
+import Popup from "reactjs-popup";
+import 'reactjs-popup/dist/index.css';
+import { PopupActions } from "reactjs-popup/dist/types";
+
 
 const GridWrapper = () => {
+    const popupRef = useRef<PopupActions>(null);
     const [gridItems, setGridItems] = useState({
         mainComponents: [
             ...gridItemsDefault
@@ -54,6 +59,9 @@ const GridWrapper = () => {
             window.removeEventListener("click", handleClick);
         };
     }, []);
+
+    const [open, setOpen] = useState(false);
+    const closeModal = () => setOpen(false);
 
 
     const handleCreateNewLayout = () => {
@@ -118,6 +126,7 @@ const GridWrapper = () => {
 
     }
 
+
     if (renderReady) {
         return (
             <>
@@ -137,9 +146,25 @@ const GridWrapper = () => {
                                             }}
                                             sx={styles.isActive(activeLayout, item)}
                                         >{item}</Button>
-                                        <Button onClick={() => {
-                                            handleDeleteLayout(item)
-                                        }}><DeleteIcon /></Button>
+                                        <Popup
+                                            trigger={<Button><DeleteIcon /></Button>}
+                                            modal
+                                            ref={popupRef}
+                                        >
+                                            <Box sx={{
+                                                ...styles.flexAlignCenter,
+                                                flexDirection: "column"
+                                            }}>
+                                                <Typography>Delete layout: {item} ?</Typography>
+                                                <Button onClick={() => {
+                                                    handleDeleteLayout(item)
+                                                    popupRef?.current?.close()
+                                                }}>yes</Button>
+                                                <Button onClick={() => {
+                                                    popupRef?.current?.close()
+                                                }}>no</Button>
+                                            </Box>
+                                        </Popup>
                                     </Box>
                                 )
                             }) : <></>}
