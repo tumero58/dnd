@@ -1,5 +1,5 @@
 import useLayout from "@/hooks/useLayout";
-import { findItem, gridItemsDefault, IGridItem, insertItem, itemsCleanup, renderPanel } from "@/utils/gridItems";
+import { findItem, gridItemsDefault, insertItem, itemsCleanup, renderPanel } from "@/utils/gridItems";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { styles } from "./GridWrapper.styles";
@@ -188,33 +188,50 @@ const GridWrapper = () => {
                                 position: "absolute",
                                 top: points.y,
                                 left: points.x,
-                                border: "1px solid #1976d2",
-                                borderRadius: "16px",
                                 display: "flex",
-                                flexDirection: "column",
-                                background: "white"
+                                background: "white",
+
                             }}>
-                                <Button onClick={() => {
-                                    handleDuplicateItem("main");
-                                }}>{"duplicate ○"}</Button>
-                                <Button role={"menuitem"} onClick={() => { setMiniMenuOpen((o) => !o) }}>
-                                    duplicate {miniMenuOpen ? "▼" : "►"}
-                                </Button>
-                                {miniMenuOpen ?
-                                    <>
-                                        <Button onClick={() => {
-                                            handleDuplicateItem("top");
-                                        }}>{"duplicate ↑"}</Button>
-                                        <Button onClick={() => {
-                                            handleDuplicateItem("left");
-                                        }}>{"duplicate ←"}</Button>
-                                        <Button onClick={() => {
-                                            handleDuplicateItem("bottom");
-                                        }}>{"duplicate ↓"}</Button>
-                                        <Button onClick={() => {
-                                            handleDuplicateItem("right");
-                                        }}>{"duplicate →"}</Button>
-                                    </> : <></>}
+                                <Box sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    border: "1px solid #1976d2",
+                                    position: "relative"
+                                }}>
+                                    <Button onClick={() => {
+                                        handleDuplicateItem("main");
+                                    }}>{"duplicate ○"}</Button>
+                                    <Button role={"menuitem"} onClick={() => { setMiniMenuOpen((o) => !o) }}>
+                                        duplicate {miniMenuOpen ? "▼" : "►"}
+                                    </Button>
+                                    {miniMenuOpen ?
+                                        <Box sx={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            border: "1px solid #1976d2",
+                                            borderRadius: "16px",
+                                            borderTopLeftRadius: "0",
+                                            position: "absolute",
+                                            right: 0,
+                                            top: 37,
+                                            transform: "translateX(100%)",
+                                            width: "max-content"
+                                        }}>
+                                            <Button onClick={() => {
+                                                handleDuplicateItem("top");
+                                            }}>{"duplicate ↑"}</Button>
+                                            <Button onClick={() => {
+                                                handleDuplicateItem("left");
+                                            }}>{"duplicate ←"}</Button>
+                                            <Button onClick={() => {
+                                                handleDuplicateItem("bottom");
+                                            }}>{"duplicate ↓"}</Button>
+                                            <Button onClick={() => {
+                                                handleDuplicateItem("right");
+                                            }}>{"duplicate →"}</Button>
+                                        </Box> : <></>}
+                                </Box>
+
                             </Box>
                         )}
                     </Box>
