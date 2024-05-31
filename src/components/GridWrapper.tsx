@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { styles } from "./GridWrapper.styles";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
 import { PopupActions } from "reactjs-popup/dist/types";
+import 'reactjs-popup/dist/index.css';
 
 
 const GridWrapper = () => {
@@ -37,6 +37,7 @@ const GridWrapper = () => {
         bottom: ""
     });
     const [duplicateItem, setDuplicateItem] = useState<any>({});
+    const [miniMenuOpen, setMiniMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleClick = (e: MouseEvent) => {
@@ -126,7 +127,6 @@ const GridWrapper = () => {
 
     }
 
-    const [miniMenuOpen, setMiniMenuOpen] = useState(false);
 
 
     if (renderReady) {

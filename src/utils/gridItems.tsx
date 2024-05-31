@@ -200,11 +200,12 @@ export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: F
             })
         }}>
             {res.arr.map((item: any, index: number) => {
+                const matchingSizes = sizes?.[res.parentClassName || "main"]?.length === res.arr.length;
                 return (
                     <Fragment key={index + 1}>
                         <Panel
                             minSize={10}
-                            defaultSize={sizes?.[res.parentClassName || "main"]?.[index] || 100}
+                            defaultSize={matchingSizes ? sizes?.[res.parentClassName || "main"]?.[index] : undefined}
                         >
                             {item.direction ?
                                 renderPanel(item, sizes, setSizes, setGridItems, setClicked, setPoints, setDuplicateProps, setDuplicateItem) :

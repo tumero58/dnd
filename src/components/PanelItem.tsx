@@ -32,7 +32,6 @@ export const deleteItemPanel = (itemFound: any, deleteItem: any) => {
     if (itemFound.items) {
         if (itemFound.main.length === 0 && itemFound.items?.length !== 0) {
             itemFound.main = itemFound.items[0].main;
-            // itemFound.direction = itemFound.items[0].direction;
             itemFound.items = itemFound.items[0].items;
         }
     }
