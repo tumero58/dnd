@@ -10,12 +10,13 @@ export interface IGridItem {
     id: number | string;
     name: string;
     component: ReactElement;
+    findIndex: number | string;
 }
 export const gridItemsDefault: IGridItem[] = [
-    { id: 1, name: "Comp1", component: <Comp1 /> },
-    { id: 2, name: "Comp2", component: <Comp2 /> },
-    { id: 3, name: "Comp3", component: <Comp3 /> },
-    { id: 4, name: "Comp4", component: <Comp4 /> },
+    { id: 1, name: "Comp1", component: <Comp1 />, findIndex: 1 },
+    { id: 2, name: "Comp2", component: <Comp2 />, findIndex: 2 },
+    { id: 3, name: "Comp3", component: <Comp3 />, findIndex: 3 },
+    { id: 4, name: "Comp4", component: <Comp4 />, findIndex: 4 },
 ]
 
 export const findItem = (name: string, items: any): any => {

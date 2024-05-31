@@ -13,8 +13,8 @@ const useLayout = (gridItems: any, setGridItems: Function) => {
     const syncComponents = useCallback((parsed: any) => {
         if (parsed.mainComponents?.length > 0) {
             parsed.mainComponents = parsed.mainComponents.map((item: any) => {
-                if (item.name) {
-                    item.component = gridItemsDefault.find((i => i.name === item.name))?.component
+                if (item.findIndex) {
+                    item.component = gridItemsDefault.find((i => i.findIndex === item.findIndex))?.component
                 }
                 return item
             })
