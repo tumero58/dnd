@@ -106,8 +106,6 @@ const GridItem = (
                                 bottom: `${className}-bottomComponents`
                             })
                             setDuplicateItem(item);
-                            console.log(e, "right click");
-
                         }} onClick={() => {
                             handleItemClick(item);
                         }}>

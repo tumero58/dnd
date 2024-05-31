@@ -17,11 +17,6 @@ const DragItem = ({
 
             const itemToMove = findItem(item.name, items);
             const newItems = deleteItem(item.name, items);
-            console.log(itemToMove);
-            console.log(positionChain);
-            console.log(newItems);
-
-
 
             insertItem(itemToMove, positionChain, newItems);
             itemsCleanup(newItems);
@@ -47,8 +42,6 @@ const DragItem = ({
             if (dropResult) {
                 const { position } = dropResult;
                 if (position) {
-                    console.log(item, position);
-
                     changeItemPosition(item, position);
                 }
             }
