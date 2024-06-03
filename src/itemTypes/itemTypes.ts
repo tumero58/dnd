@@ -1,3 +1,3 @@
 export const itemTypes = {
-    COMPONENT: "component"
-}
+  COMPONENT: "component"
+};

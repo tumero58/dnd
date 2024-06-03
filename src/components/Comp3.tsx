@@ -1,16 +1,16 @@
 import { Box } from "@mui/material";
 
 const Comp3 = () => {
-    return (
-        <Box
-            sx={{
-                fontSize: 40,
-                fontWeight: 'bold'
-            }}
-        >
+  return (
+    <Box
+      sx={{
+        fontSize: 40,
+        fontWeight: "bold"
+      }}
+    >
             Comp3
-        </Box>
-    )
+    </Box>
+  );
 };
 
 export default Comp3;

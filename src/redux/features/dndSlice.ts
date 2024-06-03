@@ -6,21 +6,21 @@ export type IDndState = {
 };
 
 const initialState: IDndState = {
-    dragging: false
+  dragging: false
 };
 
 export const dndSlice = createSlice({
-    name: "dnd",
-    initialState,
-    reducers: {
-        changeDragging: (state: IDndState, action: { payload: boolean }) => {
-            state.dragging = action.payload
-        }
+  name: "dnd",
+  initialState,
+  reducers: {
+    changeDragging: (state: IDndState, action: { payload: boolean }) => {
+      state.dragging = action.payload;
     }
+  }
 });
 
 export const {
-    changeDragging
+  changeDragging
 } = dndSlice.actions;
 
 export const getDndDragging = (state: RootState) => state.dnd.dragging;

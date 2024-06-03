@@ -13,37 +13,37 @@ interface ILayoutState {
 };
 
 const initialState: ILayoutState = {
-    sizes: {},
-    layouts: [],
-    activeLayout: "",
-    openNewLayout: false
+  sizes: {},
+  layouts: [],
+  activeLayout: "",
+  openNewLayout: false
 };
 
 export const layoutSlice = createSlice({
-    name: "layout",
-    initialState,
-    reducers: {
-        setSizes: (state: ILayoutState, action: { payload: ISizes }) => {
-            state.sizes = action.payload;
-        },
-        setLayouts: (state: ILayoutState, action: { payload: string[] }) => {
-            state.layouts = action.payload;
-        },
-        setActiveLayout: (state: ILayoutState, action: { payload: string }) => {
-            state.activeLayout = action.payload;
-        },
-        setOpenNewLayout: (state: ILayoutState, action: { payload: boolean }) => {
-            state.openNewLayout = action.payload;
-        },
-    }
+  name: "layout",
+  initialState,
+  reducers: {
+    setSizes: (state: ILayoutState, action: { payload: ISizes }) => {
+      state.sizes = action.payload;
+    },
+    setLayouts: (state: ILayoutState, action: { payload: string[] }) => {
+      state.layouts = action.payload;
+    },
+    setActiveLayout: (state: ILayoutState, action: { payload: string }) => {
+      state.activeLayout = action.payload;
+    },
+    setOpenNewLayout: (state: ILayoutState, action: { payload: boolean }) => {
+      state.openNewLayout = action.payload;
+    },
+  }
 });
 
 export const {
-    setSizes,
-    setLayouts,
-    setActiveLayout,
-    setOpenNewLayout
-} = layoutSlice.actions
+  setSizes,
+  setLayouts,
+  setActiveLayout,
+  setOpenNewLayout
+} = layoutSlice.actions;
 
 export const getSizes = (state: RootState) => state.layout.sizes;
 export const getLayouts = (state: RootState) => state.layout.layouts;

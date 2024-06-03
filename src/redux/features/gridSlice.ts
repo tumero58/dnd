@@ -16,7 +16,7 @@ interface IDuplicateProps {
 }
 
 export type IGridState = {
-    // gridItems: IGridItems;
+    gridItems: IGridItems;
     clicked: boolean;
     points: IPoints,
     duplicateProps: IDuplicateProps,
@@ -25,57 +25,61 @@ export type IGridState = {
 };
 
 const initialState: IGridState = {
-    // gridItems: {
-    //     mainComponents: [
-    //         ...gridItemsDefault
-    //     ]
-    // },
-    clicked: false,
-    points: {
-        x: 0,
-        y: 0,
-    },
-    duplicateProps: {
-        main: "",
-        top: "",
-        left: "",
-        right: "",
-        bottom: ""
-    },
-    duplicateItem: undefined
+  gridItems: {
+    mainComponents: [
+      ...gridItemsDefault
+    ]
+  },
+  clicked: false,
+  points: {
+    x: 0,
+    y: 0,
+  },
+  duplicateProps: {
+    main: "",
+    top: "",
+    left: "",
+    right: "",
+    bottom: ""
+  },
+  duplicateItem: undefined
 };
 
 export const gridSlice = createSlice({
-    name: "grid",
-    initialState,
-    reducers: {
-        // setGridItems: (state: IGridState, action: { payload: IGridItems }) => {
-        //     state.gridItems = action.payload;
-        // },
-        setClicked: (state: IGridState, action: { payload: boolean }) => {
-            state.clicked = action.payload;
-        },
-        setPoints: (state: IGridState, action: { payload: IPoints }) => {
-            state.points = action.payload;
-        },
-        setDuplicateProps: (state: IGridState, action: { payload: IDuplicateProps }) => {
-            state.duplicateProps = action.payload;
-        },
-        setDuplicateItem: (state: IGridState, action: { payload: IGridItem | undefined }) => {
-            state.duplicateItem = action.payload;
-        },
-    }
+  name: "grid",
+  initialState,
+  reducers: {
+    setGridItems: (state: IGridState, action: { payload: IGridItems }) => {
+      state.gridItems = action.payload;
+    },
+    setGridItemsCb: (state: IGridState, action: { payload: Function }) => {
+      state.gridItems = action.payload(state.gridItems);
+    },
+    setClicked: (state: IGridState, action: { payload: boolean }) => {
+      state.clicked = action.payload;
+    },
+    setPoints: (state: IGridState, action: { payload: IPoints }) => {
+      state.points = action.payload;
+    },
+    setDuplicateProps: (state: IGridState, action: { payload: IDuplicateProps }) => {
+      state.duplicateProps = action.payload;
+    },
+    setDuplicateItem: (state: IGridState, action: { payload: IGridItem | undefined }) => {
+      state.duplicateItem = action.payload;
+    },
+  }
 });
 
 export const {
-    // setGridItems,
-    setClicked,
-    setPoints,
-    setDuplicateProps,
-    setDuplicateItem
+  setGridItems,
+  setGridItemsCb,
+  setClicked,
+  setPoints,
+  setDuplicateProps,
+  setDuplicateItem
 } = gridSlice.actions;
 
-// export const getGridItems = (state: RootState) => state.grid.gridItems;
+export const getGridItems = (state: RootState) => state.grid.gridItems;
 export const getClicked = (state: RootState) => state.grid.clicked;
 export const getPoints = (state: RootState) => state.grid.points;
 export const getDuplicateProps = (state: RootState) => state.grid.duplicateProps;
