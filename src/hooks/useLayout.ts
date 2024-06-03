@@ -1,14 +1,15 @@
+import { getActiveLayout, getSizes, setActiveLayout, setLayouts, setOpenNewLayout, setSizes } from "@/redux/features/layoutSlice";
+import { useAppSelector } from "@/redux/hooks";
 import { gridItemsDefault, orderGridItems } from "@/utils/gridItems";
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const useLayout = (gridItems: any, setGridItems: Function) => {
     const [renderReady, setRenderReady] = useState(false);
-    const [sizes, setSizes] = useState<any>({});
-    const [layoutName, setLayoutName] = useState("");
-    const [layouts, setLayouts] = useState([]);
-    const [activeLayout, setActiveLayout] = useState("");
+    const dispatch = useDispatch();
+    const sizes = useAppSelector(getSizes);
+    const activeLayout = useAppSelector(getActiveLayout);
     const orderedGridItems = orderGridItems(gridItems);
-    const [openNewLayout, setOpenNewLayout] = useState(false);
 
     const syncComponents = useCallback((parsed: any) => {
         if (parsed.mainComponents?.length > 0) {
@@ -31,7 +32,7 @@ const useLayout = (gridItems: any, setGridItems: Function) => {
         if (!name) {
             return
         }
-        setActiveLayout(name);
+        dispatch(setActiveLayout(name));
         localStorage.setItem("activeLayout", name);
         const prevLayouts = localStorage.getItem("layoutsList");
         if (prevLayouts) {
@@ -53,22 +54,22 @@ const useLayout = (gridItems: any, setGridItems: Function) => {
         const layoutsLocal = localStorage.getItem("layoutsList");
         if (layoutsLocal) {
             const layoutsParsed = JSON.parse(layoutsLocal);
-            setLayouts(layoutsParsed);
+            dispatch(setLayouts(layoutsParsed));
         }
-        setOpenNewLayout(false);
-    }, [gridItems, sizes])
+        dispatch(setOpenNewLayout(false));
+    }, [gridItems, sizes, dispatch])
 
     const loadLayout = useCallback((name: string) => {
         const layout = localStorage.getItem(name);
         if (layout) {
-            setActiveLayout(name);
+            dispatch(setActiveLayout(name));
             localStorage.setItem("activeLayout", name);
             const layoutParsed = JSON.parse(layout || "");
             const { items, sizes } = layoutParsed;
             setGridItems(syncComponents(items));
-            setSizes(sizes);
+            dispatch(setSizes(sizes));
         }
-    }, [syncComponents, setGridItems])
+    }, [syncComponents, setGridItems, dispatch])
 
     useEffect(() => {
         const activeLayoutLocal = localStorage.getItem("activeLayout");
@@ -94,15 +95,14 @@ const useLayout = (gridItems: any, setGridItems: Function) => {
         const layoutsLocal = localStorage.getItem("layoutsList");
         if (layoutsLocal) {
             const layoutsParsed = JSON.parse(layoutsLocal);
-            setLayouts(layoutsParsed);
+            dispatch(setLayouts(layoutsParsed));
         }
-    }, []);
+    }, [dispatch]);
 
     return {
         renderReady,
         saveLayout, loadLayout,
-        layouts, activeLayout, openNewLayout, orderedGridItems, layoutName, sizes,
-        setLayouts, setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
+        orderedGridItems
     }
 
 };

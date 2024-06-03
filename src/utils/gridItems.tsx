@@ -3,8 +3,10 @@ import Comp2 from "@/components/Comp2";
 import Comp3 from "@/components/Comp3";
 import Comp4 from "@/components/Comp4";
 import GridItem from "@/components/GridItem";
+import { setSizes } from "@/redux/features/layoutSlice";
 import { Fragment, ReactElement } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+
 
 export interface IGridItem {
     id: number | string;
@@ -12,6 +14,15 @@ export interface IGridItem {
     component: ReactElement;
     findIndex: number | string;
 }
+
+export interface IGridItems {
+    mainComponents?: IGridItem[] | IGridItems;
+    leftComponents?: IGridItem[] | IGridItems;
+    rightComponents?: IGridItem[] | IGridItems;
+    topComponents?: IGridItem[] | IGridItems;
+    bottomComponents?: IGridItem[] | IGridItems;
+}
+
 export const gridItemsDefault: IGridItem[] = [
     { id: 1, name: "Comp1", component: <Comp1 />, findIndex: 1 },
     { id: 2, name: "Comp2", component: <Comp2 />, findIndex: 2 },
@@ -191,14 +202,13 @@ export const orderGridItems = (gridItems: any, parentClassName: string = "", pre
     }
 }
 
-export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: Function,
-    setClicked: Function, setPoints: Function, setDuplicateProps: Function, setDuplicateItem: Function) => {
+export const renderPanel = (res: any, sizes: any, dispatch: any, setGridItems: Function) => {
     return (
         <PanelGroup direction={res.direction} onLayout={(numbers) => {
-            setSizes({
+            dispatch(setSizes({
                 ...sizes,
                 [res.parentClassName || "main"]: numbers
-            })
+            }))
         }}>
             {res.arr.map((item: any, index: number) => {
                 const matchingSizes = sizes?.[res.parentClassName || "main"]?.length === res.arr.length;
@@ -209,15 +219,11 @@ export const renderPanel = (res: any, sizes: any, setSizes: any, setGridItems: F
                             defaultSize={matchingSizes ? sizes?.[res.parentClassName || "main"]?.[index] : undefined}
                         >
                             {item.direction ?
-                                renderPanel(item, sizes, setSizes, setGridItems, setClicked, setPoints, setDuplicateProps, setDuplicateItem) :
+                                renderPanel(item, sizes, dispatch, setGridItems) :
                                 <GridItem
                                     className={item.parentClassName}
                                     items={item.items}
                                     setItems={setGridItems}
-                                    setClicked={setClicked}
-                                    setPoints={setPoints}
-                                    setDuplicateProps={setDuplicateProps}
-                                    setDuplicateItem={setDuplicateItem}
                                 />
                             }
                         </Panel>

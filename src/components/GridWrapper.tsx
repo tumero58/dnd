@@ -6,11 +6,18 @@ import { styles } from "./GridWrapper.styles";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from "reactjs-popup";
 import { PopupActions } from "reactjs-popup/dist/types";
+import { useAppSelector } from "@/redux/hooks";
+import { getClicked, getDuplicateItem, getDuplicateProps, getPoints, setClicked, setDuplicateItem, setDuplicateProps, setPoints } from "@/redux/features/gridSlice";
+import { useDispatch } from "react-redux";
 import 'reactjs-popup/dist/index.css';
+import { getActiveLayout, getLayouts, getOpenNewLayout, getSizes, setActiveLayout, setLayouts, setOpenNewLayout, setSizes } from "@/redux/features/layoutSlice";
 
 
 const GridWrapper = () => {
+    const dispatch = useDispatch();
+
     const popupRef = useRef<PopupActions>(null);
+
     const [gridItems, setGridItems] = useState({
         mainComponents: [
             ...gridItemsDefault
@@ -20,23 +27,20 @@ const GridWrapper = () => {
     const {
         renderReady,
         saveLayout, loadLayout,
-        layouts, activeLayout, openNewLayout, orderedGridItems, layoutName, sizes,
-        setLayouts, setLayoutName, setOpenNewLayout, setSizes, setActiveLayout,
+        orderedGridItems
     } = useLayout(gridItems, setGridItems);
 
-    const [clicked, setClicked] = useState(false);
-    const [points, setPoints] = useState({
-        x: 0,
-        y: 0,
-    });
-    const [duplicateProps, setDuplicateProps] = useState({
-        main: "",
-        top: "",
-        left: "",
-        right: "",
-        bottom: ""
-    });
-    const [duplicateItem, setDuplicateItem] = useState<any>({});
+    const clicked = useAppSelector(getClicked);
+    const points = useAppSelector(getPoints);
+    const duplicateProps = useAppSelector(getDuplicateProps);
+    const duplicateItem = useAppSelector(getDuplicateItem);
+
+    const layouts = useAppSelector(getLayouts);
+    const sizes = useAppSelector(getSizes);
+    const activeLayout = useAppSelector(getActiveLayout);
+    const openNewLayout = useAppSelector(getOpenNewLayout);
+    const [layoutName, setLayoutName] = useState("");
+
     const [miniMenuOpen, setMiniMenuOpen] = useState(false);
 
     useEffect(() => {
@@ -44,26 +48,26 @@ const GridWrapper = () => {
             if ((e.target as any)?.role === "menuitem") {
                 return
             }
-            setClicked(false);
-            setDuplicateItem({});
-            setDuplicateProps({
+            dispatch(setClicked(false));
+            dispatch(setDuplicateItem(undefined));
+            dispatch(setDuplicateProps({
                 main: "",
                 top: "",
                 left: "",
                 right: "",
                 bottom: ""
-            })
-            setPoints({
+            }));
+            dispatch(setPoints({
                 x: 0,
                 y: 0,
-            })
+            }));
             setMiniMenuOpen(false)
         };
         window.addEventListener("click", handleClick);
         return () => {
             window.removeEventListener("click", handleClick);
         };
-    }, []);
+    }, [dispatch]);
 
     const handleCreateNewLayout = () => {
         setGridItems({
@@ -71,14 +75,14 @@ const GridWrapper = () => {
                 ...gridItemsDefault
             ]
         });
-        setSizes([]);
-        setActiveLayout("");
+        dispatch(setSizes({ main: [100] }));
+        dispatch(setActiveLayout(""));
+        dispatch(setOpenNewLayout(true));
         setLayoutName("");
-        setOpenNewLayout(true)
     };
 
     const handleCloseModule = () => {
-        setOpenNewLayout(false);
+        dispatch(setOpenNewLayout(false));
         const activeLayoutLocal = localStorage.getItem("activeLayout");
         if (activeLayoutLocal) {
             loadLayout(activeLayoutLocal);
@@ -92,18 +96,18 @@ const GridWrapper = () => {
             if (lastLayout) {
                 loadLayout(lastLayout)
             } else {
-                setActiveLayout("");
+                dispatch(setActiveLayout(""));
                 localStorage.removeItem("activeLayout");
                 setGridItems({
                     mainComponents: [
                         ...gridItemsDefault
                     ]
                 });
-                setSizes([]);
+                dispatch(setSizes({ main: [100] }));
             }
         }
         localStorage.removeItem(layoutName);
-        setLayouts(newLayouts);
+        dispatch(setLayouts(newLayouts));
         localStorage.setItem("layoutsList", JSON.stringify(newLayouts));
     }
 
@@ -111,7 +115,7 @@ const GridWrapper = () => {
         setGridItems((items: any) => {
             const positionChain = duplicateProps[position].split("-");
             positionChain.shift();
-            const newItemProps = `${duplicateItem.name}(c)`;
+            const newItemProps = `${duplicateItem?.name || ""}(c)`;
             const foundItem = findItem(newItemProps, items);
             const newItem = {
                 ...duplicateItem,
@@ -126,8 +130,6 @@ const GridWrapper = () => {
         })
 
     }
-
-
 
     if (renderReady) {
         return (
@@ -182,7 +184,7 @@ const GridWrapper = () => {
                         <Typography>{activeLayout}</Typography>
                     </Box>
                     <Box sx={styles.panelWrapper}>
-                        {renderPanel(orderedGridItems, sizes, setSizes, setGridItems, setClicked, setPoints, setDuplicateProps, setDuplicateItem)}
+                        {renderPanel(orderedGridItems, sizes, dispatch, setGridItems)}
                         {clicked && (
                             <Box sx={{
                                 position: "absolute",

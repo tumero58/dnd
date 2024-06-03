@@ -1,30 +1,24 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import DragItem from "./DragItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getDndDragging } from "@/redux/features/dndSlice";
 import DropAreaGrid from "./DropAreaGrid";
 import { deleteItem, itemsCleanup } from "@/utils/gridItems";
+import { setClicked, setDuplicateItem, setDuplicateProps, setPoints } from "@/redux/features/gridSlice";
 
 const GridItem = (
     {
         items,
         setItems,
         className,
-        setClicked,
-        setPoints,
-        setDuplicateProps,
-        setDuplicateItem
     }:
         {
             items: any,
             setItems: any,
             className: any,
-            setClicked: any,
-            setPoints: any,
-            setDuplicateProps: any,
-            setDuplicateItem: any
         }) => {
+    const dispatch = useDispatch();
     const isDragging = useSelector(getDndDragging);
 
     const [activeItem, setActiveItem] = useState<any>(items?.[0] || {});
@@ -93,19 +87,19 @@ const GridItem = (
                     }}
                         onContextMenu={(e) => {
                             e.preventDefault();
-                            setClicked(true);
-                            setPoints({
+                            dispatch(setClicked(true));
+                            dispatch(setPoints({
                                 x: e.pageX,
                                 y: e.pageY,
-                            });
-                            setDuplicateProps({
+                            }));
+                            dispatch(setDuplicateProps({
                                 main: `${className}-mainComponents`,
                                 top: `${className}-topComponents`,
                                 left: `${className}-leftComponents`,
                                 right: `${className}-rightComponents`,
                                 bottom: `${className}-bottomComponents`
-                            })
-                            setDuplicateItem(item);
+                            }));
+                            dispatch(setDuplicateItem(item));
                         }} onClick={() => {
                             handleItemClick(item);
                         }}>
