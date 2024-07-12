@@ -8,17 +8,17 @@ import { Fragment } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 export interface IGridItem {
-    id: number | string;
-    name: string;
-    findIndex: number | string;
+  id: number | string;
+  name: string;
+  findIndex: number | string;
 }
 
 export interface IGridItems {
-    mainComponents?: IGridItem[] | IGridItems;
-    leftComponents?: IGridItem[] | IGridItems;
-    rightComponents?: IGridItem[] | IGridItems;
-    topComponents?: IGridItem[] | IGridItems;
-    bottomComponents?: IGridItem[] | IGridItems;
+  mainComponents?: IGridItem[] | IGridItems;
+  leftComponents?: IGridItem[] | IGridItems;
+  rightComponents?: IGridItem[] | IGridItems;
+  topComponents?: IGridItem[] | IGridItems;
+  bottomComponents?: IGridItem[] | IGridItems;
 }
 
 export const gridItemsDefault: IGridItem[] = [
@@ -222,6 +222,7 @@ export const renderPanel = (res: any, sizes: any, dispatch: any) => {
             <Panel
               minSize={10}
               defaultSize={matchingSizes ? sizes?.[res.parentClassName || "main"]?.[index] : undefined}
+              key={sizes?.[res.parentClassName || "main"]?.[index]}
             >
               {item.direction ?
                 renderPanel(item, sizes, dispatch) :

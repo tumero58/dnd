@@ -1,7 +1,7 @@
 import { getGridItems, setGridItems } from "@/redux/features/gridSlice";
 import { getActiveLayout, getSizes, setActiveLayout, setLayouts, setOpenNewLayout, setSizes } from "@/redux/features/layoutSlice";
 import { useAppSelector } from "@/redux/hooks";
-import {  orderGridItems } from "@/utils/gridItems";
+import { orderGridItems } from "@/utils/gridItems";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
